@@ -36,13 +36,13 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <section id="contact" class="section-container bg-[#2F3438]">
+  <section id="contact" class="section-container bg-[#111111]">
     <div class="max-w-4xl mx-auto">
       <h2 class="section-title">Contato</h2>
       
       <div class="grid md:grid-cols-12 gap-8">
         <div class="md:col-span-5">
-          <div class="bg-[#444B54] p-6 rounded-lg shadow-lg">
+          <div class="bg-[#1a1a1a] p-6 rounded-lg shadow-lg">
             <h3 class="text-xl font-semibold mb-4 text-[#F5F5F5]">Informações de Contato</h3>
             
             <div class="space-y-4">
@@ -111,7 +111,7 @@ const handleSubmit = async () => {
         </div>
         
         <div class="md:col-span-7">
-          <div class="bg-[#444B54] p-6 rounded-lg shadow-lg">
+          <div class="bg-[#1a1a1a] p-6 rounded-lg shadow-lg">
             <h3 class="text-xl font-semibold mb-4 text-[#F5F5F5]">Envie uma Mensagem</h3>
             
             <form @submit.prevent="handleSubmit">
@@ -121,7 +121,7 @@ const handleSubmit = async () => {
                   type="text" 
                   id="name" 
                   v-model="formData.name" 
-                  class="w-full px-3 py-2 bg-[#2F3438] text-[#F5F5F5] border border-[#D3D3D3] rounded-md focus:outline-none focus:ring-2 focus:ring-[#D3D3D3] focus:border-transparent" 
+                  class="w-full px-3 py-2 bg-[#111111] text-[#F5F5F5] border border-[#333333] rounded-md focus:outline-none focus:ring-2 focus:ring-[#D3D3D3] focus:border-transparent" 
                   required
                 />
               </div>
@@ -132,7 +132,7 @@ const handleSubmit = async () => {
                   type="email" 
                   id="email" 
                   v-model="formData.email" 
-                  class="w-full px-3 py-2 bg-[#2F3438] text-[#F5F5F5] border border-[#D3D3D3] rounded-md focus:outline-none focus:ring-2 focus:ring-[#D3D3D3] focus:border-transparent" 
+                  class="w-full px-3 py-2 bg-[#111111] text-[#F5F5F5] border border-[#333333] rounded-md focus:outline-none focus:ring-2 focus:ring-[#D3D3D3] focus:border-transparent" 
                   required
                 />
               </div>
@@ -143,7 +143,7 @@ const handleSubmit = async () => {
                   id="message" 
                   v-model="formData.message" 
                   rows="4" 
-                  class="w-full px-3 py-2 bg-[#2F3438] text-[#F5F5F5] border border-[#D3D3D3] rounded-md focus:outline-none focus:ring-2 focus:ring-[#D3D3D3] focus:border-transparent" 
+                  class="w-full px-3 py-2 bg-[#111111] text-[#F5F5F5] border border-[#333333] rounded-md focus:outline-none focus:ring-2 focus:ring-[#D3D3D3] focus:border-transparent" 
                   required
                 ></textarea>
               </div>
@@ -159,11 +159,11 @@ const handleSubmit = async () => {
                 </button>
               </div>
               
-              <div v-if="isSubmitted" class="mt-4 p-3 bg-[#2F3438] text-[#D3D3D3] rounded-md">
+              <div v-if="isSubmitted" class="mt-4 p-3 bg-[#111111] text-[#D3D3D3] rounded-md">
                 Mensagem enviada com sucesso! Entraremos em contato em breve.
               </div>
               
-              <div v-if="errorMessage" class="mt-4 p-3 bg-[#2F3438] text-red-400 rounded-md">
+              <div v-if="errorMessage" class="mt-4 p-3 bg-[#111111] text-red-400 rounded-md">
                 {{ errorMessage }}
               </div>
             </form>

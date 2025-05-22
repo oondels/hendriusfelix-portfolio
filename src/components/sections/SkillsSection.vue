@@ -54,12 +54,12 @@ const skillCategories = [
 </script>
 
 <template>
-  <section id="skills" class="section-container bg-[#2F3438]">
+  <section id="skills" class="section-container bg-[#111111]">
     <div class="max-w-6xl mx-auto">
       <h2 class="section-title">Habilidades Técnicas</h2>
       
       <div class="grid md:grid-cols-2 gap-8">
-        <div v-for="(category, index) in skillCategories" :key="index" class="bg-[#444B54] p-6 rounded-lg shadow-lg">
+        <div v-for="(category, index) in skillCategories" :key="index" class="bg-[#1a1a1a] p-6 rounded-lg shadow-lg">
           <h3 class="text-xl font-semibold mb-4 text-[#F5F5F5]">{{ category.name }}</h3>
           
           <div class="space-y-4">
@@ -68,7 +68,7 @@ const skillCategories = [
                 <span class="text-[#F5F5F5] font-medium">{{ skill.name }}</span>
                 <span class="text-[#D3D3D3] text-sm">{{ skill.level }}/5</span>
               </div>
-              <div class="w-full bg-[#2F3438] rounded-full h-2">
+              <div class="w-full bg-[#111111] rounded-full h-2">
                 <div class="bg-[#D3D3D3] h-2 rounded-full transition-all duration-300" 
                      :style="{ width: `${skill.level * 20}%` }"></div>
               </div>

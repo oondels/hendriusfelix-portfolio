@@ -45,20 +45,20 @@ const projects = ref<Project[]>([
 </script>
 
 <template>
-  <section id="projects" class="section-container bg-[#2F3438]">
+  <section id="projects" class="section-container bg-[#111111]">
     <div class="max-w-6xl mx-auto">
       <h2 class="section-title">Projetos</h2>
       
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div v-for="project in projects" :key="project.id" 
-          class="bg-[#444B54] rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-2">
+          class="bg-[#1a1a1a] rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-2">
           <div class="h-48 overflow-hidden">
             <img :src="project.image" :alt="project.title" class="w-full h-full object-cover" />
           </div>
           <div class="p-6">
             <div class="flex items-center justify-between mb-2">
               <h3 class="text-xl font-semibold text-[#F5F5F5]">{{ project.title }}</h3>
-              <span class="px-2 py-1 text-xs rounded-full bg-[#2F3438] text-[#D3D3D3]">
+              <span class="px-2 py-1 text-xs rounded-full bg-[#111111] text-[#D3D3D3]">
                 {{ project.status }}
               </span>
             </div>
@@ -69,7 +69,7 @@ const projects = ref<Project[]>([
               <h4 class="text-sm font-medium text-[#F5F5F5] mb-2">Stack Tecnológica</h4>
               <div class="flex flex-wrap gap-2">
                 <span v-for="tech in project.stack" :key="tech" 
-                  class="px-3 py-1 bg-[#2F3438] text-[#D3D3D3] rounded-full text-xs font-medium">
+                  class="px-3 py-1 bg-[#111111] text-[#D3D3D3] rounded-full text-xs font-medium">
                   {{ tech }}
                 </span>
               </div>
