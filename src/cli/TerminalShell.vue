@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useEventListener } from '@vueuse/core';
-import { executeCommand } from './commands';
+import { executeCommand } from './commands/FileSystem';
 
 interface HistoryEntry {
   command: string;
