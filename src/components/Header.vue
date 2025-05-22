@@ -18,7 +18,7 @@ defineEmits(['toggle-terminal']);
 </script>
 
 <template>
-  <header class="bg-[#444B54] shadow-lg fixed top-0 w-full z-10">
+  <header class="fixed top-0 w-full z-10 border-b border-[#F5F5F5]/10 backdrop-blur-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <div class="flex items-center">
@@ -38,7 +38,7 @@ defineEmits(['toggle-terminal']);
         <div class="flex items-center">
           <button 
             @click="$emit('toggle-terminal')"
-            class="ml-4 flex items-center justify-center p-2 rounded-md text-[#D3D3D3] hover:text-[#F5F5F5] hover:bg-[#2F3438] focus:outline-none transition-colors duration-200"
+            class="ml-4 flex items-center justify-center p-2 rounded-md text-[#D3D3D3] hover:text-[#F5F5F5] focus:outline-none transition-colors duration-200"
             aria-label="Open terminal mode">
             <span class="text-lg font-mono">&gt;_</span>
           </button>
@@ -46,7 +46,7 @@ defineEmits(['toggle-terminal']);
           <!-- Mobile menu button -->
           <button 
             @click="toggleMobileMenu"
-            class="md:hidden ml-2 inline-flex items-center justify-center p-2 rounded-md text-[#D3D3D3] hover:text-[#F5F5F5] hover:bg-[#2F3438] focus:outline-none transition-colors duration-200"
+            class="md:hidden ml-2 inline-flex items-center justify-center p-2 rounded-md text-[#D3D3D3] hover:text-[#F5F5F5] focus:outline-none transition-colors duration-200"
             aria-expanded="false">
             <span class="sr-only">Open main menu</span>
             <!-- Icon when menu is closed -->
@@ -63,7 +63,7 @@ defineEmits(['toggle-terminal']);
     </div>
 
     <!-- Mobile menu -->
-    <div v-if="isMobileMenuOpen" class="md:hidden bg-[#444B54]">
+    <div v-if="isMobileMenuOpen" class="md:hidden backdrop-blur-sm border-t border-[#F5F5F5]/10">
       <div class="pt-2 pb-3 space-y-1">
         <a v-for="link in links" :key="link.name" :href="link.href"
           class="text-[#D3D3D3] hover:text-[#F5F5F5] block px-3 py-2 text-base font-medium"
