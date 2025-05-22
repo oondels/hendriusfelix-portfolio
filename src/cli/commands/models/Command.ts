@@ -1,5 +1,4 @@
 import { Terminal } from "./Terminal";
-import { writeFileSync, readFileSync, existsSync } from 'fs';
 
 export abstract class Command {
   constructor(public readonly name: string, public readonly description = "") { }

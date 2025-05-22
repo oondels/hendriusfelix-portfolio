@@ -20,12 +20,13 @@ export abstract class FileSystemNode {
     throw new Error("Unknown FileSystemNode type.");
   }
 
-  static fromJSON(obj: any, parent?: Directory): FileSystemNode {
+  static fromJSON(obj: any, pwd: string, parent?: Directory): FileSystemNode {
     if (obj.type === 'directory') {
-      const dir = new Directory(obj.name, parent);
+      const dir = new Directory(obj.name, pwd, parent);
 
       for (const child of obj.children) {
-        dir.add(FileSystemNode.fromJSON(child, dir));
+        const childrenPwd = pwd + '/' + child.name
+        dir.add(FileSystemNode.fromJSON(child, childrenPwd, dir));
       }
       return dir;
     }
@@ -39,10 +40,12 @@ export abstract class FileSystemNode {
 export class Directory extends FileSystemNode {
   children: FileSystemNode[] = [];
   parent: FileSystemNode | undefined;
+  pwd: string
 
-  constructor(name: string, parent?: Directory) {
+  constructor(name: string, pwd: string, parent?: Directory) {
     super(name);
     this.parent = parent;
+    this.pwd = pwd
   }
 
   isDirectory(): boolean {

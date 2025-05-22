@@ -23,17 +23,6 @@ export class TerminalService {
     this.history = [];
   }
 
-  updateTerminal(data: any) {
-    console.log("\n");
-
-    if (Array.isArray(data)) {
-
-      // data.forEach((response) => {        
-      //   console.log("hendrius@portfolio > " + response.command + "\n" + response.output);
-      // });
-    }
-  }
-
   runCommand(input: string, registry: CommandRegistry, terminal: Terminal) {
     if (input === 'clear') {
       this.clearHistory();

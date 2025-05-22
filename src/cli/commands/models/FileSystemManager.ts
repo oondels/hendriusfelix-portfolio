@@ -19,7 +19,9 @@ export class FileSystemManager {
 
     const raw = readFileSync(this.filePath, 'utf-8');
     const obj = JSON.parse(raw);
-    const root = FileSystemNode.fromJSON(obj);
+    const pwd = "/" + obj.name
+    
+    const root = FileSystemNode.fromJSON(obj, pwd);
     
     if (root instanceof Directory) return root;
     throw new Error('Esperava raiz do tipo Directory');
