@@ -6,48 +6,48 @@ interface SkillCategory {
 
 interface Skill {
   name: string;
-  level: number; // 1-5
+  level: number;
 }
 
 const skillCategories = [
   {
-    name: 'Linguagens de Programação',
+    name: 'Backend',
     skills: [
-      { name: 'Python', level: 5 },
-      { name: 'Java', level: 4 },
-      { name: 'C/C++', level: 4 },
-      { name: 'JavaScript', level: 3 },
-      { name: 'TypeScript', level: 3 }
+      { name: 'Node.js', level: 5 },
+      { name: 'TypeScript', level: 5 },
+      { name: 'PostgreSQL', level: 4 },
+      { name: 'Redis', level: 4 },
+      { name: 'JWT/OAuth', level: 4 }
     ]
   },
   {
-    name: 'Back-end & Servidores',
+    name: 'Frontend',
     skills: [
-      { name: 'Node.js', level: 4 },
-      { name: 'Spring Boot', level: 4 },
-      { name: 'Django', level: 5 },
-      { name: 'FastAPI', level: 4 },
-      { name: 'Docker', level: 4 }
+      { name: 'Vue.js', level: 4 },
+      { name: 'Tailwind CSS', level: 4 },
+      { name: 'Axios', level: 4 },
+      { name: 'HTML/CSS', level: 4 },
+      { name: 'JavaScript', level: 5 }
+    ]
+  },
+  {
+    name: 'DevOps & Infra',
+    skills: [
+      { name: 'Docker', level: 4 },
+      { name: 'Nginx', level: 3 },
+      { name: 'CI/CD', level: 4 },
+      { name: 'Linux/WSL', level: 4 },
+      { name: 'Git', level: 5 }
     ]
   },
   {
     name: 'IoT & Automação',
     skills: [
-      { name: 'MQTT', level: 5 },
-      { name: 'Raspberry Pi', level: 5 },
+      { name: 'ESP32', level: 5 },
+      { name: 'RFID', level: 4 },
       { name: 'Arduino', level: 5 },
-      { name: 'Sistemas Embarcados', level: 4 },
-      { name: 'PLC Programming', level: 3 }
-    ]
-  },
-  {
-    name: 'Banco de Dados',
-    skills: [
-      { name: 'PostgreSQL', level: 4 },
-      { name: 'MongoDB', level: 4 },
-      { name: 'Redis', level: 3 },
-      { name: 'InfluxDB', level: 4 },
-      { name: 'SQLite', level: 5 }
+      { name: 'WebSocket', level: 4 },
+      { name: 'RabbitMQ', level: 4 }
     ]
   }
 ];
@@ -56,7 +56,7 @@ const skillCategories = [
 <template>
   <section id="skills" class="section-container bg-[#2F3438]">
     <div class="max-w-6xl mx-auto">
-      <h2 class="section-title">Habilidades</h2>
+      <h2 class="section-title">Habilidades Técnicas</h2>
       
       <div class="grid md:grid-cols-2 gap-8">
         <div v-for="(category, index) in skillCategories" :key="index" class="bg-[#444B54] p-6 rounded-lg shadow-lg">
@@ -69,7 +69,8 @@ const skillCategories = [
                 <span class="text-[#D3D3D3] text-sm">{{ skill.level }}/5</span>
               </div>
               <div class="w-full bg-[#2F3438] rounded-full h-2">
-                <div class="bg-[#D3D3D3] h-2 rounded-full" :style="{ width: `${skill.level * 20}%` }"></div>
+                <div class="bg-[#D3D3D3] h-2 rounded-full transition-all duration-300" 
+                     :style="{ width: `${skill.level * 20}%` }"></div>
               </div>
             </div>
           </div>
