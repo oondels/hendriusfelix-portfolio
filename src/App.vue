@@ -16,7 +16,7 @@ const enterTerminal = () => {
 </script>
 
 <template>
-  <div class="min-h-screen" :class="{ 'bg-[#1E1E2E]': isTerminalMode }">
+  <div class="min-h-screen bg-[#111111]">
     <template v-if="isTerminalMode">
       <TerminalShell @exit="exitTerminal" />
     </template>

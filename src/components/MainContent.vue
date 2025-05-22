@@ -6,7 +6,7 @@ import ContactSection from './sections/ContactSection.vue';
 </script>
 
 <template>
-  <main class="pt-16 bg-[#2F3438]">
+  <main class="pt-16 bg-[#111111]">
     <AboutSection />
     <ProjectsSection />
     <SkillsSection />
