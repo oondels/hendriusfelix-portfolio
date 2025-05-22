@@ -7,22 +7,15 @@
 :root {
   --font-family: 'Inter', system-ui, sans-serif;
   --font-mono: 'Fira Code', 'Courier New', monospace;
-  --color-bg: #ffffff;
-  --color-text: #1a1a1a;
-  --color-primary: #4338ca;
-  --color-accent: #10b981;
+  --color-bg: #2F3438;
+  --color-secondary: #444B54;
+  --color-accent: #D3D3D3;
+  --color-text: #F5F5F5;
 }
 
 body {
   font-family: var(--font-family);
-  @apply bg-gray-50 text-gray-900 m-0 min-h-screen;
-}
-
-.terminal-text {
-  overflow: hidden;
-  white-space: nowrap;
-  border-right: 2px solid;
-  animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+  @apply bg-[#2F3438] text-[#F5F5F5] m-0 min-h-screen;
 }
 
 @layer components {
@@ -31,18 +24,18 @@ body {
   }
 
   .section-title {
-    @apply text-3xl md:text-4xl font-bold mb-8 text-gray-900;
+    @apply text-3xl md:text-4xl font-bold mb-8 text-[#F5F5F5];
   }
 
   .btn {
-    @apply px-6 py-2 rounded-md font-medium transition-colors duration-300;
+    @apply px-6 py-2 rounded-md font-medium transition-all duration-300;
   }
 
   .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700;
+    @apply bg-[#444B54] text-[#F5F5F5] hover:bg-[#D3D3D3] hover:text-[#2F3438];
   }
 
-  .terminal-container {
-    @apply bg-black text-green-400 font-mono p-4 rounded-md overflow-hidden;
+  .card {
+    @apply bg-[#444B54] rounded-lg shadow-lg p-6 transition-transform duration-300 hover:-translate-y-1;
   }
 }

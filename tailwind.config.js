@@ -7,13 +7,14 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        mono: ['Fira Code', 'JetBrains Mono', 'Courier New', 'monospace'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['Fira Code', 'JetBrains Mono', 'monospace'],
       },
       colors: {
-        primary: {
-          600: '#4338ca', // Using the color from :root CSS variables
-          700: '#3730a3', // Slightly darker shade for hover
-        },
+        background: '#2F3438',
+        secondary: '#444B54',
+        accent: '#D3D3D3',
+        text: '#F5F5F5',
       },
     },
   },

@@ -6,7 +6,7 @@ import ContactSection from './sections/ContactSection.vue';
 </script>
 
 <template>
-  <main class="pt-16"> <!-- Add padding-top to account for fixed header -->
+  <main class="pt-16 bg-[#2F3438]">
     <AboutSection />
     <ProjectsSection />
     <SkillsSection />
