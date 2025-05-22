@@ -4,7 +4,7 @@ import TerminalShell from './cli/TerminalShell.vue';
 import MainContent from './components/MainContent.vue';
 import Header from './components/Header.vue';
 
-const isTerminalMode = ref(true);
+const isTerminalMode = ref(false);
 
 const exitTerminal = () => {
   isTerminalMode.value = false;
