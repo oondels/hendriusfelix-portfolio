@@ -11,8 +11,8 @@ export default {
         mono: ['Fira Code', 'JetBrains Mono', 'monospace'],
       },
       colors: {
-        background: '#2F3438',
-        secondary: '#444B54',
+        background: '#111111',
+        secondary: '#1a1a1a',
         accent: '#D3D3D3',
         text: '#F5F5F5',
       },
