@@ -35,26 +35,26 @@ const projects = ref<Project[]>([
 </script>
 
 <template>
-  <section id="projects" class="section-container bg-gray-50">
+  <section id="projects" class="section-container bg-[#2F3438]">
     <div class="max-w-6xl mx-auto">
       <h2 class="section-title">Projetos</h2>
       
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div v-for="project in projects" :key="project.id" 
-          class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:-translate-y-2">
+          class="bg-[#444B54] rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-2">
           <div class="h-48 overflow-hidden">
             <img :src="project.image" :alt="project.title" class="w-full h-full object-cover" />
           </div>
           <div class="p-6">
-            <h3 class="text-xl font-semibold mb-2 text-gray-900">{{ project.title }}</h3>
-            <p class="text-gray-700 mb-4">{{ project.description }}</p>
+            <h3 class="text-xl font-semibold mb-2 text-[#F5F5F5]">{{ project.title }}</h3>
+            <p class="text-[#D3D3D3] mb-4">{{ project.description }}</p>
             <div class="flex flex-wrap gap-2 mb-4">
               <span v-for="tag in project.tags" :key="tag" 
-                class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium">
+                class="px-3 py-1 bg-[#2F3438] text-[#D3D3D3] rounded-full text-xs font-medium">
                 {{ tag }}
               </span>
             </div>
-            <button class="text-primary-600 font-medium hover:text-primary-800 transition-colors duration-200">
+            <button class="text-[#D3D3D3] font-medium hover:text-[#F5F5F5] transition-colors duration-200">
               Ver detalhes →
             </button>
           </div>
