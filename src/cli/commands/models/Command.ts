@@ -1,12 +1,14 @@
 import { Terminal } from "./Terminal";
+import { writeFileSync, readFileSync, existsSync } from 'fs';
 
 export abstract class Command {
-  constructor(public readonly name: string) { }
-  abstract execute(args: string[], terminal: Terminal): void;
+  constructor(public readonly name: string, public readonly description = "") { }
+
+  abstract execute(args: string[], terminal: Terminal): void
 }
 
 export class CommandRegistry {
-  private commands = new Map<string, Command>()
+  private commands = new Map<string, Command>();
 
   register(command: Command): void {
     this.commands.set(command.name, command);
@@ -16,7 +18,7 @@ export class CommandRegistry {
     return this.commands.get(name);
   }
 
-  list(): string[] {
-    return [...this.commands.keys()];
+  list(): Command[] {
+    return [...this.commands.values()];
   }
 }

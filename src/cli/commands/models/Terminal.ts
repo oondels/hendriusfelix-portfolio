@@ -1,4 +1,4 @@
-import { Directory, FileSystemNode } from "../FileSystem"
+import { Directory, FileSystemNode } from "./FileSystem"
 
 export class Terminal {
   private currentDirectory: Directory;
@@ -7,11 +7,16 @@ export class Terminal {
     this.currentDirectory = root;
   }
 
-  getCurrentDirectory(): Directory {
+  getCurrentDirectory(): Directory {    
     return this.currentDirectory
   }
 
   changeDirectory(dir: Directory): void {
     this.currentDirectory = dir
+  }
+
+  print(text: string) {
+    console.log(text)
+    return text
   }
 }
