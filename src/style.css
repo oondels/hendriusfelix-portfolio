@@ -21,12 +21,12 @@
 }
 
 html {
-  @apply min-h-screen;
+  @apply min-h-screen bg-background transition-colors duration-300;
 }
 
 body {
   font-family: 'Inter', sans-serif;
-  @apply bg-background text-accent min-h-screen transition-colors duration-300;
+  @apply min-h-screen bg-background text-accent transition-colors duration-300;
 }
 
 #app {
