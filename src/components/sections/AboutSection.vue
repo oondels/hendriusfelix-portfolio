@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import CertificationsModal from '../CertificationsModal.vue';
+
+const showCertifications = ref(false);
+
 const downloadResume = () => {
   // TODO: Implement resume download functionality
   console.log('Downloading resume...');
@@ -59,10 +64,15 @@ const socialLinks = [
             </div>
           </div>
 
-          <div class="flex items-center gap-6 pt-4">
+          <div class="flex flex-wrap items-center gap-4 pt-4">
             <button @click="downloadResume" 
                     class="px-6 py-3 bg-white text-black font-medium rounded-lg hover:bg-[#D3D3D3] transition-colors duration-300 flex items-center gap-2">
               <span>Download Resume</span>
+            </button>
+            
+            <button @click="showCertifications = true"
+                    class="px-6 py-3 bg-white/5 text-white font-medium rounded-lg border border-white/10 hover:bg-white/10 transition-colors duration-300">
+              View Certifications
             </button>
             
             <div class="flex gap-4">
@@ -117,5 +127,11 @@ const socialLinks = [
         </div>
       </div>
     </div>
+
+    <!-- Certifications Modal -->
+    <CertificationsModal 
+      :show="showCertifications"
+      @close="showCertifications = false"
+    />
   </section>
 </template>
