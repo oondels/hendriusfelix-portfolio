@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
@@ -12,12 +13,12 @@ export default {
       },
       colors: {
         background: {
-          DEFAULT: '#111111',
-          secondary: '#1a1a1a',
+          DEFAULT: 'var(--color-background)',
+          secondary: 'var(--color-background-secondary)',
         },
         accent: {
-          DEFAULT: '#D3D3D3',
-          light: '#F5F5F5',
+          DEFAULT: 'var(--color-accent)',
+          light: 'var(--color-accent-light)',
         },
       },
     },

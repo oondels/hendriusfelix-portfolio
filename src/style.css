@@ -4,18 +4,25 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --font-family: 'Inter', system-ui, sans-serif;
-  --font-mono: 'Fira Code', 'Courier New', monospace;
-  --color-bg: #111111;
-  --color-secondary: #1a1a1a;
-  --color-accent: #D3D3D3;
-  --color-text: #F5F5F5;
+@layer base {
+  :root {
+    --color-background: #f8f9fa;
+    --color-background-secondary: #ffffff;
+    --color-accent: #4a5568;
+    --color-accent-light: #2d3748;
+  }
+
+  :root.dark {
+    --color-background: #111111;
+    --color-background-secondary: #1a1a1a;
+    --color-accent: #D3D3D3;
+    --color-accent-light: #F5F5F5;
+  }
 }
 
 body {
   font-family: var(--font-family);
-  @apply bg-[#111111] text-[#F5F5F5] m-0 min-h-screen;
+  @apply bg-background text-accent-light m-0 min-h-screen transition-colors duration-300;
 }
 
 @layer components {
@@ -24,7 +31,7 @@ body {
   }
 
   .section-title {
-    @apply text-3xl md:text-4xl font-bold mb-8 text-[#F5F5F5];
+    @apply text-3xl md:text-4xl font-bold mb-8 text-accent-light;
   }
 
   .btn {
@@ -32,18 +39,18 @@ body {
   }
 
   .btn-primary {
-    @apply bg-white text-[#111111] hover:bg-[#D3D3D3];
+    @apply bg-accent-light text-background hover:bg-accent;
   }
 
   .card {
-    @apply bg-[#1a1a1a] rounded-lg shadow-lg p-6 transition-transform duration-300 hover:-translate-y-1;
+    @apply bg-background-secondary rounded-lg shadow-lg p-6 transition-transform duration-300 hover:-translate-y-1;
   }
 
   .input-field {
-    @apply w-full px-3 py-2 bg-[#1a1a1a] text-[#F5F5F5] border border-[#333333] rounded-md focus:outline-none focus:ring-2 focus:ring-[#D3D3D3] focus:border-transparent;
+    @apply w-full px-3 py-2 bg-background-secondary text-accent-light border border-accent/20 rounded-md focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent;
   }
 
   .glass-card {
-    @apply bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg;
+    @apply bg-accent/5 backdrop-blur-sm border border-accent/10 rounded-lg;
   }
 }

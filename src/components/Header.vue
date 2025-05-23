@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useWindowScroll } from '@vueuse/core';
+import ThemeToggle from './ThemeToggle.vue';
 
 const { y } = useWindowScroll();
 const isMobileMenuOpen = ref(false);
@@ -23,12 +24,10 @@ const toggleMobileMenu = () => {
 };
 
 const handleScroll = () => {
-  // Show/hide header based on scroll direction
   isScrollingUp.value = y.value < lastScrollY.value;
   isHeaderVisible.value = y.value < 100 || isScrollingUp.value;
   lastScrollY.value = y.value;
 
-  // Update active section
   const sections = document.querySelectorAll('section[id]');
   sections.forEach(section => {
     const sectionTop = section.offsetTop - 100;
@@ -71,7 +70,7 @@ const emit = defineEmits(['toggle-terminal', 'toggle-certifications']);
     class="fixed top-0 w-full z-50 transition-all duration-300"
     :class="[
       isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
-      y > 50 ? 'bg-black/80 backdrop-blur-md border-b border-white/10' : 'bg-transparent'
+      y > 50 ? 'bg-background-secondary/80 backdrop-blur-md border-b border-accent/10' : 'bg-transparent'
     ]"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -79,7 +78,7 @@ const emit = defineEmits(['toggle-terminal', 'toggle-certifications']);
         <!-- Logo -->
         <div class="flex items-center">
           <a href="#" class="flex items-center space-x-2">
-            <span class="text-2xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">HF</span>
+            <span class="text-2xl font-bold bg-gradient-to-r from-accent-light to-accent bg-clip-text text-transparent">HF</span>
           </a>
         </div>
         
@@ -93,20 +92,22 @@ const emit = defineEmits(['toggle-terminal', 'toggle-certifications']);
             class="relative px-1 py-2 text-sm font-medium transition-colors duration-200"
             :class="[
               currentSection === link.href.substring(1)
-                ? 'text-white'
-                : 'text-[#D3D3D3] hover:text-white'
+                ? 'text-accent-light'
+                : 'text-accent hover:text-accent-light'
             ]"
           >
             {{ link.name }}
             <span 
-              class="absolute bottom-0 left-0 w-full h-0.5 bg-white transform scale-x-0 transition-transform duration-200"
+              class="absolute bottom-0 left-0 w-full h-0.5 bg-accent-light transform scale-x-0 transition-transform duration-200"
               :class="{ 'scale-x-100': currentSection === link.href.substring(1) }"
             ></span>
           </a>
           
+          <ThemeToggle />
+          
           <button 
             @click="$emit('toggle-terminal')"
-            class="px-3 py-1 text-sm font-medium bg-white/5 hover:bg-white/10 text-[#D3D3D3] hover:text-white rounded-lg transition-all duration-200 border border-white/10"
+            class="px-3 py-1 text-sm font-medium bg-accent/5 hover:bg-accent/10 text-accent hover:text-accent-light rounded-lg transition-all duration-200 border border-accent/10"
           >
             <span class="font-mono">&gt;_</span>
             <span class="ml-2">Terminal</span>
@@ -114,10 +115,11 @@ const emit = defineEmits(['toggle-terminal', 'toggle-certifications']);
         </nav>
 
         <!-- Mobile Menu Button -->
-        <div class="flex items-center md:hidden">
+        <div class="flex items-center space-x-4 md:hidden">
+          <ThemeToggle />
           <button 
             @click="toggleMobileMenu"
-            class="p-2 rounded-lg bg-white/5 text-[#D3D3D3] hover:text-white focus:outline-none"
+            class="p-2 rounded-lg bg-accent/5 text-accent hover:text-accent-light focus:outline-none"
           >
             <span class="sr-only">Open menu</span>
             <svg 
@@ -154,11 +156,11 @@ const emit = defineEmits(['toggle-terminal', 'toggle-certifications']);
       @click="closeMenu"
     >
       <!-- Backdrop -->
-      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute inset-0 bg-background/50 backdrop-blur-sm"></div>
       
       <!-- Menu Content -->
       <div 
-        class="absolute right-0 top-16 w-full max-w-sm bg-[#111111] border-l border-white/10 h-screen"
+        class="absolute right-0 top-16 w-full max-w-sm bg-background border-l border-accent/10 h-screen"
         @click.stop
       >
         <div class="px-4 py-6 space-y-4">
@@ -167,15 +169,15 @@ const emit = defineEmits(['toggle-terminal', 'toggle-certifications']);
             :key="link.name"
             :href="link.href"
             @click.prevent="handleNavClick(link)"
-            class="block px-4 py-3 text-[#D3D3D3] hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200"
-            :class="{ 'text-white bg-white/5': currentSection === link.href.substring(1) }"
+            class="block px-4 py-3 text-accent hover:text-accent-light hover:bg-accent/5 rounded-lg transition-colors duration-200"
+            :class="{ 'text-accent-light bg-accent/5': currentSection === link.href.substring(1) }"
           >
             {{ link.name }}
           </a>
           
           <button 
             @click="$emit('toggle-terminal'); closeMenu()"
-            class="w-full px-4 py-3 text-left text-[#D3D3D3] hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200"
+            class="w-full px-4 py-3 text-left text-accent hover:text-accent-light hover:bg-accent/5 rounded-lg transition-colors duration-200"
           >
             <span class="font-mono">&gt;_</span>
             <span class="ml-2">Terminal Mode</span>
