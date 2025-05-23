@@ -34,7 +34,9 @@ export class TerminalService {
     const command = registry.get(cmd);
 
     if (command) {
-      command.execute(args, terminal)
+      const response = command.execute(args, terminal)
+      console.log('Resposta: ', response);
+      
     } else {
       console.log(`Comando não encontrado: ${cmd}`);
       this.addToHistory(input, null);

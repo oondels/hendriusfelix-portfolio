@@ -35,6 +35,7 @@ export class WhoamiCommand extends Command {
 
   execute(args: string[], terminal: Terminal) {
     terminal.print("Hendrius Félix – Eng. de Software | CLI Portfolio")
+    return "Hendrius Félix – Eng. de Software | CLI Portfolio"
   }
 }
 
