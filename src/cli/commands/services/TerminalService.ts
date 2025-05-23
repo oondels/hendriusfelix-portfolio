@@ -1,0 +1,44 @@
+import { CommandRegistry } from "../models/Command";
+import { Terminal } from "../models/Terminal";
+import { Directory } from "../models/FileSystem";
+
+export interface CommandHistory {
+  command: string;
+  timestamp: Date;
+  output: string | Directory | null;
+}
+
+export class TerminalService {
+  private history: CommandHistory[] = [];
+
+  addToHistory(command: string, output: string | null) {
+    this.history.push({ command, timestamp: new Date(), output: output || "" });
+  }
+
+  getHistory() {
+    return this.history;
+  }
+
+  clearHistory() {
+    this.history = [];
+  }
+
+  runCommand(input: string, registry: CommandRegistry, terminal: Terminal) {
+    if (input === 'clear') {
+      this.clearHistory();
+      console.clear()
+      return;
+    }
+
+    const [cmd, ...args] = input.trim().split(" ");
+    const command = registry.get(cmd);
+
+    if (command) {
+      const response = command.execute(args, terminal)
+      return response
+    } else {
+      this.addToHistory(input, null);
+      return {command: cmd, output: [`Command not found: ${cmd}. Type help for a list of commands.`]}
+    }
+  }
+}

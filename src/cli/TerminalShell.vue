@@ -18,10 +18,11 @@
     <!-- Current command line -->
     <div class="flex items-center mt-4">
       <span class="text-[#89B4FA] mr-2">{{ prompt }}</span>
+      <!-- @keydown="handleKeydown" -->
       <input
         ref="inputRef"
         v-model="currentCommand"
-        
+        @keyup.enter="handleCommandInput"
         type="text"
         class="flex-1 bg-transparent outline-none caret-[#89B4FA]"
         autocomplete="off"
@@ -38,22 +39,55 @@
 </template>
 
 <script setup lang="ts">
-// onUnmounted
-import { ref, onMounted } from "vue";
-// import { useEventListener } from "@vueuse/core";
-// import { executeCommand } from "./commands";
+import { ref, onMounted, onUnmounted } from "vue";
+import { useEventListener } from "@vueuse/core";
+import { FileSystemManager } from "./commands/models/FileSystemManager";
+import { Directory } from "./commands/models/FileSystem";
+import { Terminal } from "./commands/models/Terminal";
+import { TerminalService } from "./commands/services/TerminalService";
+import { registry } from "./commands/commands";
+
+const manager = new FileSystemManager();
+const root = manager.load() as Directory;
+const terminal = new Terminal(root);
+const terminalService = new TerminalService();
+
 
 interface HistoryEntry {
   command: string;
   output: string[];
 }
 
+const commandHistory = ref<HistoryEntry[]>([]);
+
+function handleCommandInput() {
+  if (currentCommand.value) {
+    if (currentCommand.value === "exit") {
+      emit("exit");
+      currentCommand.value = "";
+      return;
+    }
+    if (currentCommand.value === "clear") {
+      commandHistory.value = [];
+      currentCommand.value = "";
+      return;
+    }
+
+    const response = terminalService.runCommand(currentCommand.value, registry, terminal) as HistoryEntry;
+
+    commandHistory.value.push({
+      command: response.command,
+      output: response.output,
+    });
+  }
+  currentCommand.value = "";
+}
+
 const emit = defineEmits(["exit"]);
 
-const commandHistory = ref<HistoryEntry[]>([]);
 const currentCommand = ref("");
-// const historyIndex = ref(-1);
-// const historyBuffer = ref<string[]>([]);
+const historyIndex = ref(-1);
+const historyBuffer = ref<string[]>([]);
 const suggestions = ref<string[]>([]);
 const showSuggestions = ref(false);
 
@@ -73,6 +107,20 @@ onMounted(() => {
     output: ["Welcome to Hendrius Félix's Portfolio Terminal", 'Type "help" to see available commands', ""],
   });
 });
+
+// Keep focus on input
+useEventListener(document, "click", () => {
+  if (inputRef.value) {
+    inputRef.value.focus();
+  }
+});
+
+// Clean up
+onUnmounted(() => {
+  historyBuffer.value = [];
+  commandHistory.value = [];
+});
+
 </script>
 
 <style scoped>
