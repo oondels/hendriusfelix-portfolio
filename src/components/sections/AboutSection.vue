@@ -29,27 +29,27 @@ const socialLinks = [
 </script>
 
 <template>
-  <section id="about" class="min-h-screen flex items-center bg-[#111111] py-20">
+  <section id="about" class="min-h-screen flex items-center py-20">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-12 gap-12 items-center">
         <!-- Text Content -->
         <div class="lg:col-span-7 space-y-8">
           <div class="space-y-4">
-            <h1 class="text-4xl lg:text-5xl font-bold text-white tracking-tight">
+            <h1 class="text-4xl lg:text-5xl font-bold text-accent-light tracking-tight">
               Hendrius Félix
             </h1>
-            <p class="text-xl text-[#888] font-light">
+            <p class="text-xl text-accent font-light">
               Full-Stack Developer | Backend & IoT Specialist
             </p>
           </div>
 
           <div class="prose prose-invert max-w-none space-y-4">
-            <p class="text-lg text-[#D3D3D3] leading-relaxed">
+            <p class="text-lg text-accent leading-relaxed">
               Mechanical Engineer turned Software Developer, currently pursuing an MBA in Software Engineering at PUC-Rio. 
               Specializing in backend development, automation systems, and IoT solutions.
             </p>
             
-            <p class="text-lg text-[#D3D3D3] leading-relaxed">
+            <p class="text-lg text-accent leading-relaxed">
               With expertise in Node.js, TypeScript, and cloud infrastructure, I've architected and implemented 
               industrial-scale solutions integrating microservices, ESP32 devices, RFID systems, and real-time 
               WebSocket communications.
@@ -58,7 +58,7 @@ const socialLinks = [
             <div class="flex flex-wrap gap-3 py-4">
               <span v-for="tech in ['Node.js', 'TypeScript', 'PostgreSQL', 'Redis', 'Docker', 'RabbitMQ', 'Vue.js']" 
                     :key="tech"
-                    class="px-3 py-1 bg-white/5 rounded-full text-sm text-[#D3D3D3] border border-white/10">
+                    class="px-3 py-1 bg-background-secondary rounded-full text-sm text-accent border border-accent/10">
                 {{ tech }}
               </span>
             </div>
@@ -66,12 +66,12 @@ const socialLinks = [
 
           <div class="flex flex-wrap items-center gap-4 pt-4">
             <button @click="downloadResume" 
-                    class="px-6 py-3 bg-white text-black font-medium rounded-lg hover:bg-[#D3D3D3] transition-colors duration-300 flex items-center gap-2">
+                    class="px-6 py-3 bg-accent-light text-background font-medium rounded-lg hover:bg-accent transition-colors duration-300 flex items-center gap-2">
               <span>Download Resume</span>
             </button>
             
             <button @click="showCertifications = true"
-                    class="px-6 py-3 bg-white/5 text-white font-medium rounded-lg border border-white/10 hover:bg-white/10 transition-colors duration-300">
+                    class="px-6 py-3 bg-background-secondary text-accent-light font-medium rounded-lg border border-accent/10 hover:bg-accent/10 transition-colors duration-300">
               View Certifications
             </button>
             
@@ -82,15 +82,15 @@ const socialLinks = [
                  :title="link.name"
                  target="_blank"
                  rel="noopener noreferrer"
-                 class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors duration-300 border border-white/10">
-                <svg class="w-5 h-5 text-[#D3D3D3]" viewBox="0 0 16 16" fill="currentColor">
+                 class="w-10 h-10 flex items-center justify-center rounded-full bg-background-secondary hover:bg-accent/10 transition-colors duration-300 border border-accent/10">
+                <svg class="w-5 h-5 text-accent" viewBox="0 0 16 16" fill="currentColor">
                   <path :d="link.icon"/>
                 </svg>
               </a>
             </div>
           </div>
 
-          <p class="text-lg font-medium text-[#D3D3D3] pt-6 border-t border-white/10">
+          <p class="text-lg font-medium text-accent pt-6 border-t border-accent/10">
             "Technology with purpose. Code that matters."
           </p>
         </div>
@@ -98,7 +98,7 @@ const socialLinks = [
         <!-- Profile Image -->
         <div class="lg:col-span-5">
           <div class="relative">
-            <div class="aspect-square rounded-full overflow-hidden shadow-2xl border-4 border-white/10">
+            <div class="aspect-square rounded-full overflow-hidden shadow-2xl border-4 border-accent/10">
               <img 
                 src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg"
                 alt="Hendrius Félix"
@@ -107,19 +107,19 @@ const socialLinks = [
             </div>
             
             <!-- Stats Overlay -->
-            <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[90%] p-4 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
+            <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[90%] p-4 bg-background-secondary backdrop-blur-md rounded-xl border border-accent/10">
               <div class="grid grid-cols-3 gap-4 text-center">
                 <div>
-                  <p class="text-xl font-bold text-white">2015</p>
-                  <p class="text-[#888] text-sm">Since</p>
+                  <p class="text-xl font-bold text-accent-light">2015</p>
+                  <p class="text-accent text-sm">Since</p>
                 </div>
                 <div>
-                  <p class="text-xl font-bold text-white">50+</p>
-                  <p class="text-[#888] text-sm">Projects</p>
+                  <p class="text-xl font-bold text-accent-light">50+</p>
+                  <p class="text-accent text-sm">Projects</p>
                 </div>
                 <div>
-                  <p class="text-xl font-bold text-white">24</p>
-                  <p class="text-[#888] text-sm">Age</p>
+                  <p class="text-xl font-bold text-accent-light">24</p>
+                  <p class="text-accent text-sm">Age</p>
                 </div>
               </div>
             </div>
