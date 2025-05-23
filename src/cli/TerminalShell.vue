@@ -52,10 +52,12 @@ const root = manager.load() as Directory;
 const terminal = new Terminal(root);
 const terminalService = new TerminalService();
 
+
 interface HistoryEntry {
   command: string;
   output: string[];
 }
+
 const commandHistory = ref<HistoryEntry[]>([]);
 
 function handleCommandInput() {
@@ -118,6 +120,7 @@ onUnmounted(() => {
   historyBuffer.value = [];
   commandHistory.value = [];
 });
+
 </script>
 
 <style scoped>
