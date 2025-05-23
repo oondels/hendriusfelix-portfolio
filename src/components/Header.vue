@@ -1,75 +1,186 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useWindowScroll } from '@vueuse/core';
+
+const { y } = useWindowScroll();
+const isMobileMenuOpen = ref(false);
+const lastScrollY = ref(0);
+const isHeaderVisible = ref(true);
+const isScrollingUp = ref(true);
 
 const links = [
-  { name: 'Sobre', href: '#about' },
-  { name: 'Projetos', href: '#projects' },
-  { name: 'Habilidades', href: '#skills' },
-  { name: 'Contato', href: '#contact' },
+  { name: 'About', href: '#about' },
+  { name: 'Projects', href: '#projects' },
+  { name: 'Skills', href: '#skills' },
+  { name: 'Certifications', href: '#', modal: true },
+  { name: 'Contact', href: '#contact' },
 ];
 
-const isMobileMenuOpen = ref(false);
+const currentSection = ref('');
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value;
 };
 
-defineEmits(['toggle-terminal']);
+const handleScroll = () => {
+  // Show/hide header based on scroll direction
+  isScrollingUp.value = y.value < lastScrollY.value;
+  isHeaderVisible.value = y.value < 100 || isScrollingUp.value;
+  lastScrollY.value = y.value;
+
+  // Update active section
+  const sections = document.querySelectorAll('section[id]');
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 100;
+    const sectionHeight = section.offsetHeight;
+    if (y.value >= sectionTop && y.value < sectionTop + sectionHeight) {
+      currentSection.value = section.id;
+    }
+  });
+};
+
+const closeMenu = () => {
+  isMobileMenuOpen.value = false;
+};
+
+const handleNavClick = (link: { href: string, modal: boolean }) => {
+  if (link.modal) {
+    emit('toggle-certifications');
+  } else {
+    const element = document.querySelector(link.href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+  closeMenu();
+};
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll, { passive: true });
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
+
+const emit = defineEmits(['toggle-terminal', 'toggle-certifications']);
 </script>
 
 <template>
-  <header class="fixed top-0 w-full z-10 border-b border-[#F5F5F5]/10 backdrop-blur-sm">
+  <header 
+    class="fixed top-0 w-full z-50 transition-all duration-300"
+    :class="[
+      isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
+      y > 50 ? 'bg-black/80 backdrop-blur-md border-b border-white/10' : 'bg-transparent'
+    ]"
+  >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
+        <!-- Logo -->
         <div class="flex items-center">
-          <div class="flex-shrink-0 flex items-center">
-            <span class="text-xl font-bold text-[#F5F5F5]">Hendrius Félix</span>
-          </div>
+          <a href="#" class="flex items-center space-x-2">
+            <span class="text-2xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">HF</span>
+          </a>
         </div>
         
-        <!-- Desktop menu -->
-        <nav class="hidden md:ml-6 md:flex md:space-x-8">
-          <a v-for="link in links" :key="link.name" :href="link.href"
-            class="text-[#D3D3D3] hover:text-[#F5F5F5] px-3 py-2 text-sm font-medium transition-colors duration-200">
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center space-x-8">
+          <a 
+            v-for="link in links" 
+            :key="link.name"
+            :href="link.href"
+            @click.prevent="handleNavClick(link)"
+            class="relative px-1 py-2 text-sm font-medium transition-colors duration-200"
+            :class="[
+              currentSection === link.href.substring(1)
+                ? 'text-white'
+                : 'text-[#D3D3D3] hover:text-white'
+            ]"
+          >
             {{ link.name }}
+            <span 
+              class="absolute bottom-0 left-0 w-full h-0.5 bg-white transform scale-x-0 transition-transform duration-200"
+              :class="{ 'scale-x-100': currentSection === link.href.substring(1) }"
+            ></span>
           </a>
-        </nav>
-
-        <div class="flex items-center">
+          
           <button 
             @click="$emit('toggle-terminal')"
-            class="ml-4 flex items-center justify-center p-2 rounded-md text-[#D3D3D3] hover:text-[#F5F5F5] focus:outline-none transition-colors duration-200"
-            aria-label="Open terminal mode">
-            <span class="text-lg font-mono">&gt;_</span>
+            class="px-3 py-1 text-sm font-medium bg-white/5 hover:bg-white/10 text-[#D3D3D3] hover:text-white rounded-lg transition-all duration-200 border border-white/10"
+          >
+            <span class="font-mono">&gt;_</span>
+            <span class="ml-2">Terminal</span>
           </button>
-          
-          <!-- Mobile menu button -->
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <div class="flex items-center md:hidden">
           <button 
             @click="toggleMobileMenu"
-            class="md:hidden ml-2 inline-flex items-center justify-center p-2 rounded-md text-[#D3D3D3] hover:text-[#F5F5F5] focus:outline-none transition-colors duration-200"
-            aria-expanded="false">
-            <span class="sr-only">Open main menu</span>
-            <!-- Icon when menu is closed -->
-            <svg v-if="!isMobileMenuOpen" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-            <!-- Icon when menu is open -->
-            <svg v-else class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            class="p-2 rounded-lg bg-white/5 text-[#D3D3D3] hover:text-white focus:outline-none"
+          >
+            <span class="sr-only">Open menu</span>
+            <svg 
+              class="w-6 h-6 transition-transform duration-300"
+              :class="{ 'rotate-90': isMobileMenuOpen }"
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path 
+                v-if="!isMobileMenuOpen" 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                stroke-width="2" 
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+              <path 
+                v-else 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                stroke-width="2" 
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Mobile menu -->
-    <div v-if="isMobileMenuOpen" class="md:hidden backdrop-blur-sm border-t border-[#F5F5F5]/10">
-      <div class="pt-2 pb-3 space-y-1">
-        <a v-for="link in links" :key="link.name" :href="link.href"
-          class="text-[#D3D3D3] hover:text-[#F5F5F5] block px-3 py-2 text-base font-medium"
-          @click="isMobileMenuOpen = false">
-          {{ link.name }}
-        </a>
+    <!-- Mobile Menu -->
+    <div 
+      v-show="isMobileMenuOpen"
+      class="md:hidden fixed inset-0 z-40"
+      @click="closeMenu"
+    >
+      <!-- Backdrop -->
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      
+      <!-- Menu Content -->
+      <div 
+        class="absolute right-0 top-16 w-full max-w-sm bg-[#111111] border-l border-white/10 h-screen"
+        @click.stop
+      >
+        <div class="px-4 py-6 space-y-4">
+          <a 
+            v-for="link in links" 
+            :key="link.name"
+            :href="link.href"
+            @click.prevent="handleNavClick(link)"
+            class="block px-4 py-3 text-[#D3D3D3] hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200"
+            :class="{ 'text-white bg-white/5': currentSection === link.href.substring(1) }"
+          >
+            {{ link.name }}
+          </a>
+          
+          <button 
+            @click="$emit('toggle-terminal'); closeMenu()"
+            class="w-full px-4 py-3 text-left text-[#D3D3D3] hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200"
+          >
+            <span class="font-mono">&gt;_</span>
+            <span class="ml-2">Terminal Mode</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
