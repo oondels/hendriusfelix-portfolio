@@ -35,11 +35,10 @@ export class TerminalService {
 
     if (command) {
       const response = command.execute(args, terminal)
-      console.log('Resposta: ', response);
-      
+      return response
     } else {
-      console.log(`Comando não encontrado: ${cmd}`);
       this.addToHistory(input, null);
+      return {command: cmd, output: [`Command not found: ${cmd}. Type help for a list of commands.`]}
     }
   }
 }

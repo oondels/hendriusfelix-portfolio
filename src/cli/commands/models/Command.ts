@@ -1,9 +1,14 @@
 import { Terminal } from "./Terminal";
 
+interface CommandResponse {
+  command: any;
+  output: string[];
+}
+
 export abstract class Command {
   constructor(public readonly name: string, public readonly description = "") { }
 
-  abstract execute(args: string[], terminal: Terminal): void
+  abstract execute(args: string[], terminal: Terminal): CommandResponse | undefined
 }
 
 export class CommandRegistry {

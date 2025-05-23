@@ -35,7 +35,7 @@ export class WhoamiCommand extends Command {
 
   execute(args: string[], terminal: Terminal) {
     terminal.print("Hendrius Félix – Eng. de Software | CLI Portfolio")
-    return "Hendrius Félix – Eng. de Software | CLI Portfolio"
+    return { command: this.name, output: ["Hendrius Félix – Eng. de Software | CLI Portfolio"] }
   }
 }
 
@@ -47,8 +47,8 @@ export class lsCommand extends Command {
   execute(args: string[], terminal: Terminal) {
     if (args.length === 0) {
       const dir = terminal.getCurrentDirectory();
-      terminal.print(dir.list().join(" "))
-      return
+      // terminal.print(dir.list().join(" "))
+      return { command: this.name, output: [dir.list().join(" ")] };
     }
 
     const arg = args[0];
@@ -58,7 +58,11 @@ export class lsCommand extends Command {
     const parts = arg.split('/').filter(Boolean);
 
     const current = navegateDirectories(startDir, parts, terminal)
-    terminal.print(current.list().join(" "))
+    // terminal.print(current.list().join(" "))
+    return {
+      command: this.name,
+      output: [current.list().join(" ")]
+    }
   }
 }
 
@@ -69,7 +73,7 @@ export class cdCommand extends Command {
 
   execute(args: string[], terminal: Terminal) {
     if (args.length === 0) {
-      return terminal.print('Uso: cd <pasta>');
+      return { command: this.name, output: ['Uso: cd <pasta>'] };
     }
 
     const arg = args[0];
@@ -81,8 +85,13 @@ export class cdCommand extends Command {
     const current = navegateDirectories(startDir, parts, terminal)
     if (current instanceof Directory) {
       terminal.changeDirectory(current)
-      terminal.print(`Mudando para ${current.name}`)
+      // terminal.print(`Mudando para ${current.name}`)
+      return {
+        command: this.name,
+        output: [`Mudando para ${current.name}`]
+      }
     }
+
   }
 }
 
@@ -92,24 +101,24 @@ export class catCommand extends Command {
     super("cat", "Exibe o conteúdo do arquivo.")
   }
 
-  execute(args: string[], terminal: Terminal): string | void {
+  execute(args: string[], terminal: Terminal) {
     const arg = args[0];
 
     const currentDir = terminal.getCurrentDirectory()
     const isFile = currentDir.children.filter(c => c instanceof File)
 
     if (args.length !== 1 || currentDir.children.length <= 0 || !isFile.length) {
-      terminal.print("Uso: cat <file>")
-      return 'Uso: cat <file>'
+      // terminal.print("Uso: cat <file>")
+      return { command: this.name, output: ["Uso: cat <file>"] }
     }
     const searchedFile = isFile.filter(file => file.name === arg)
     if (!searchedFile.length) {
       terminal.print('File not found.')
-      return 'File not found.'
+      return { command: this.name, output: ['File not found.'] }
     }
 
-    console.log(searchedFile);
-    // return searchedFile
+    // console.log(searchedFile);
+    return { command: this.name, output: [searchedFile[0].content] }
   }
 }
 
@@ -119,10 +128,13 @@ export class pwdCommand extends Command {
     super("pwd", "Exibe o path completo até o diretório atual.")
   }
 
-  execute(args: string[], terminal: Terminal): string | void {
+  execute(args: string[], terminal: Terminal) {
     const currentDir = terminal.getCurrentDirectory()
-    terminal.print(currentDir.pwd)
-    return currentDir.pwd
+    // terminal.print(currentDir.pwd)
+    return {
+      command: this.name,
+      output: [currentDir.pwd]
+    }
   }
 }
 
@@ -131,17 +143,18 @@ export class helpCommand extends Command {
     super("help", "Print the commands' description.")
   }
 
-  execute(args: string[], terminal: Terminal): void {
+  execute(args: string[], terminal: Terminal) {
     const commandName = args[0]
     const command = registry.get(commandName)
 
     if (!command) {
       terminal.print("Comando não encontrado!")
-      return
+      return { command: this.name, output: ["Comando não encontrado!"] }
     }
 
     if (command instanceof Command) {
       terminal.print(`${command.name}: ${command?.description}`)
+      return { command: this.name, output: [`${command.name}: ${command?.description}`] }
     }
   }
 }
