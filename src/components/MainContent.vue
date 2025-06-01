@@ -2,6 +2,7 @@
 import AboutSection from './sections/AboutSection.vue';
 import ProjectsSection from './sections/ProjectsSection.vue';
 import SkillsSection from './sections/SkillsSection.vue';
+import BlogSection from './sections/BlogSection.vue';
 import ContactSection from './sections/ContactSection.vue';
 </script>
 
@@ -10,6 +11,7 @@ import ContactSection from './sections/ContactSection.vue';
     <AboutSection />
     <ProjectsSection />
     <SkillsSection />
+    <BlogSection />
     <ContactSection />
   </main>
 </template>
