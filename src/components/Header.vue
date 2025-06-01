@@ -3,13 +3,19 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { useWindowScroll } from '@vueuse/core';
 import ThemeToggle from './ThemeToggle.vue';
 
+interface NavLink {
+  name: string;
+  href: string;
+  modal?: boolean;
+}
+
 const { y } = useWindowScroll();
 const isMobileMenuOpen = ref(false);
 const lastScrollY = ref(0);
 const isHeaderVisible = ref(true);
 const isScrollingUp = ref(true);
 
-const links = [
+const links: NavLink[] = [
   { name: 'About', href: '#about' },
   { name: 'Projects', href: '#projects' },
   { name: 'Skills', href: '#skills' },
@@ -30,8 +36,8 @@ const handleScroll = () => {
 
   const sections = document.querySelectorAll('section[id]');
   sections.forEach(section => {
-    const sectionTop = section.offsetTop - 100;
-    const sectionHeight = section.offsetHeight;
+    const sectionTop = (section as HTMLElement).offsetTop - 100;
+    const sectionHeight = (section as HTMLElement).offsetHeight;
     if (y.value >= sectionTop && y.value < sectionTop + sectionHeight) {
       currentSection.value = section.id;
     }
@@ -42,7 +48,7 @@ const closeMenu = () => {
   isMobileMenuOpen.value = false;
 };
 
-const handleNavClick = (link: { href: string, modal: boolean }) => {
+const handleNavClick = (link: NavLink) => {
   if (link.modal) {
     emit('toggle-certifications');
   } else {
