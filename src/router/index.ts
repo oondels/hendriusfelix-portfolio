@@ -1,12 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import App from '../App.vue';
 import AdminLogin from '../components/admin/AdminLogin.vue';
 
 const routes = [
-  {
-    path: '/',
-    component: App
-  },
   {
     path: '/terminal-access-47892',
     component: AdminLogin,

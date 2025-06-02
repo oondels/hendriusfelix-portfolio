@@ -1,18 +1,23 @@
 <template>
   <div class="min-h-screen bg-background transition-colors duration-300">
-    <template v-if="isTerminalMode">
-      <TerminalShell @exit="exitTerminal" />
+    <template v-if="$route.path === '/terminal-access-47892'">
+      <router-view></router-view>
     </template>
     <template v-else>
-      <Header 
-        @toggle-terminal="enterTerminal"
-        @toggle-certifications="toggleCertifications"
-      />
-      <MainContent />
-      <CertificationsModal 
-        :show="showCertifications"
-        @close="showCertifications = false"
-      />
+      <template v-if="isTerminalMode">
+        <TerminalShell @exit="exitTerminal" />
+      </template>
+      <template v-else>
+        <Header 
+          @toggle-terminal="enterTerminal"
+          @toggle-certifications="toggleCertifications"
+        />
+        <MainContent />
+        <CertificationsModal 
+          :show="showCertifications"
+          @close="showCertifications = false"
+        />
+      </template>
     </template>
   </div>
 </template>
