@@ -38,31 +38,13 @@ const routes = [
         component: ProfileManager,
         name: 'profile-manager'
       }
-    ],
-    meta: {
-      requiresAuth: false
-    }
+    ]
   }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes
-});
-
-// Navigation guard for protected routes
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    // This is a simple check - in a real app, you'd verify the auth token
-    const isAuthenticated = localStorage.getItem('admin_authenticated') === 'true';
-    if (!isAuthenticated) {
-      next('/terminal-access-47892');
-    } else {
-      next();
-    }
-  } else {
-    next();
-  }
 });
 
 export default router;
