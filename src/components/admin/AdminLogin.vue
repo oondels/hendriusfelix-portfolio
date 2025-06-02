@@ -1,16 +1,19 @@
 <template>
-  <div class="min-h-screen bg-black text-green-500 font-mono p-4 flex items-center justify-center">
-    <div class="w-full max-w-2xl">
+  <div class="min-h-screen bg-[#0a0a0f] text-[#00b4d8] font-mono p-4 flex items-center justify-center overflow-hidden">
+    <div class="w-full max-w-3xl">
       <!-- Boot Sequence -->
       <div v-if="bootPhase < 100" class="space-y-2">
         <div v-for="(line, index) in bootLines" :key="index" 
+             v-motion
+             :initial="{ opacity: 0, y: 20 }"
+             :enter="{ opacity: 1, y: 0, transition: { delay: index * 100 } }"
              :class="{ 'opacity-0': index > bootPhase }"
              class="transition-opacity duration-100">
           {{ line }}
         </div>
-        <div class="h-4 relative overflow-hidden">
-          <div class="absolute inset-0 bg-green-500/20">
-            <div class="h-full bg-green-500" 
+        <div class="h-4 relative overflow-hidden rounded">
+          <div class="absolute inset-0 bg-[#00b4d8]/20">
+            <div class="h-full bg-[#00b4d8]" 
                  :style="{ width: `${bootPhase}%` }">
             </div>
           </div>
@@ -19,62 +22,53 @@
 
       <!-- Login Terminal -->
       <div v-else class="space-y-6">
-        <!-- ASCII Art Logo -->
-        <pre class="text-xs sm:text-sm leading-none mb-8">
- _    _            _      _           
-| |  | |          | |    (_)          
-| |__| | ___ _ __ | |     _ _ __  _   _ __  
-|  __  |/ _ \ '_ \| |    | | '_ \| | | \ \ / /
-| |  | |  __/ | | | |____| | | | | |_| |\ V / 
-|_|  |_|\___|_| |_|\_____|_|_| |_|\__,_| \_/  
-        </pre>
+        <!-- Dynamic Welcome Message -->
+        <div ref="welcomeEl" class="text-[#90e0ef] mb-8"></div>
 
         <div class="space-y-4">
           <div class="flex items-center space-x-2" 
                :class="{ 'opacity-50': currentField !== 'username' }">
-            <span class="text-green-500">login:</span>
+            <span class="text-[#00b4d8]">login:</span>
             <input 
               ref="usernameInput"
               v-model="username"
               type="text"
               :disabled="currentField !== 'username'"
               @keydown.enter="focusPassword"
-              class="bg-transparent border-none outline-none text-green-500 caret-green-500 flex-1"
+              class="bg-transparent border-none outline-none text-[#48cae4] caret-[#48cae4] flex-1"
               autocomplete="off"
             >
           </div>
 
           <div class="flex items-center space-x-2" 
                :class="{ 'opacity-50': currentField !== 'password' }">
-            <span class="text-green-500">password:</span>
+            <span class="text-[#00b4d8]">password:</span>
             <input 
               ref="passwordInput"
               v-model="password"
               :type="showPassword ? 'text' : 'password'"
               :disabled="currentField !== 'password'"
               @keydown.enter="attemptLogin"
-              class="bg-transparent border-none outline-none text-green-500 caret-green-500 flex-1"
+              class="bg-transparent border-none outline-none text-[#48cae4] caret-[#48cae4] flex-1"
               autocomplete="off"
             >
           </div>
         </div>
 
         <!-- Terminal Output -->
-        <div v-if="error" class="text-red-500 mt-4">
+        <div v-if="error" class="text-red-400 mt-4 font-mono">
           > Error: {{ error }}
         </div>
 
-        <div v-if="isLoading" class="text-green-500 mt-4">
+        <div v-if="isLoading" class="text-[#00b4d8] mt-4 font-mono">
           > Authenticating...
           <span class="animate-pulse">_</span>
         </div>
 
-        <!-- Command History -->
-        <div class="mt-8 pt-4 border-t border-green-500/20">
-          <div v-for="(cmd, index) in commandHistory" 
-               :key="index" 
-               class="text-sm text-green-500/70">
-            > {{ cmd }}
+        <!-- Integrated Terminal -->
+        <div class="mt-8 pt-4 border-t border-[#00b4d8]/20">
+          <div class="bg-[#0a0a0f] rounded-lg p-4">
+            <div ref="terminalContainer" class="h-48"></div>
           </div>
         </div>
       </div>
@@ -83,8 +77,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { Terminal } from 'xterm';
+import { FitAddon } from 'xterm-addon-fit';
+import Typed from 'typed.js';
+import 'xterm/css/xterm.css';
 
 const router = useRouter();
 const bootPhase = ref(0);
@@ -94,20 +92,100 @@ const password = ref('');
 const error = ref('');
 const isLoading = ref(false);
 const showPassword = ref(false);
-const commandHistory = ref<string[]>([]);
 
 const usernameInput = ref<HTMLInputElement | null>(null);
 const passwordInput = ref<HTMLInputElement | null>(null);
+const welcomeEl = ref<HTMLElement | null>(null);
+const terminalContainer = ref<HTMLElement | null>(null);
+
+let terminal: Terminal | null = null;
+let fitAddon: FitAddon | null = null;
 
 const bootLines = [
-  'BIOS Version 2.5.3',
-  'CPU: AMD Ryzen 9 5950X @ 3.4GHz',
-  'Memory Test: 32768MB OK',
-  'Initializing Security Protocols...',
-  'Loading Terminal Interface...',
+  'BIOS Version 3.0.1',
+  'Initializing System Components...',
+  'CPU: Quantum Core i9 @ 5.2GHz',
+  'Memory Test: 64GB Quantum RAM OK',
+  'Neural Network Interface: Online',
+  'Quantum Encryption Protocols: Active',
   'Establishing Secure Connection...',
-  'Ready.'
+  'Terminal Interface: Ready'
 ];
+
+const commands = {
+  help: () => {
+    return `Available commands:
+  help     - Show this help message
+  clear    - Clear terminal
+  about    - Show system information
+  exit     - Exit terminal
+  login    - Start login sequence`;
+  },
+  about: () => {
+    return `Secure Terminal v3.0.1
+Quantum-Enhanced Authentication System
+Copyright © ${new Date().getFullYear()} Hendrius Labs`;
+  },
+  clear: () => {
+    terminal?.clear();
+    return '';
+  },
+  login: () => {
+    currentField.value = 'username';
+    usernameInput.value?.focus();
+    return 'Initiating login sequence...';
+  }
+};
+
+const initTerminal = () => {
+  if (!terminalContainer.value) return;
+
+  terminal = new Terminal({
+    theme: {
+      background: '#0a0a0f',
+      foreground: '#00b4d8',
+      cursor: '#48cae4'
+    },
+    cursorBlink: true,
+    fontSize: 14
+  });
+
+  fitAddon = new FitAddon();
+  terminal.loadAddon(fitAddon);
+  terminal.open(terminalContainer.value);
+  fitAddon.fit();
+
+  terminal.writeln('Terminal ready. Type "help" for available commands.');
+  terminal.write('\r\n$ ');
+
+  let commandBuffer = '';
+  terminal.onKey(({ key, domEvent }) => {
+    const printable = !domEvent.altKey && !domEvent.ctrlKey && !domEvent.metaKey;
+
+    if (domEvent.keyCode === 13) { // Enter
+      terminal.writeln('');
+      if (commandBuffer.trim()) {
+        const cmd = commandBuffer.trim().toLowerCase();
+        if (cmd in commands) {
+          const output = commands[cmd as keyof typeof commands]();
+          terminal.writeln(output);
+        } else {
+          terminal.writeln(`Command not found: ${cmd}`);
+        }
+      }
+      commandBuffer = '';
+      terminal.write('$ ');
+    } else if (domEvent.keyCode === 8) { // Backspace
+      if (commandBuffer.length > 0) {
+        commandBuffer = commandBuffer.slice(0, -1);
+        terminal.write('\b \b');
+      }
+    } else if (printable) {
+      commandBuffer += key;
+      terminal.write(key);
+    }
+  });
+};
 
 const simulateBoot = async () => {
   for (let i = 0; i <= 100; i++) {
@@ -132,18 +210,16 @@ const attemptLogin = async () => {
 
   isLoading.value = true;
   error.value = '';
-  commandHistory.value.push(`Attempting login for user: ${username.value}`);
+  terminal?.writeln(`Attempting authentication for user: ${username.value}`);
 
-  // Simulate API call
   await new Promise(r => setTimeout(r, 2000));
 
-  // Mock authentication
   if (username.value === 'admin' && password.value === 'matrix') {
-    commandHistory.value.push('Authentication successful');
+    terminal?.writeln('Authentication successful');
     router.push('/admin');
   } else {
     error.value = 'Access denied. Invalid credentials.';
-    commandHistory.value.push('Authentication failed');
+    terminal?.writeln('Authentication failed');
   }
 
   isLoading.value = false;
@@ -151,29 +227,57 @@ const attemptLogin = async () => {
 
 onMounted(() => {
   simulateBoot();
+  
+  // Initialize welcome message
+  new Typed(welcomeEl.value!, {
+    strings: [
+      'Welcome to Quantum-Secured Terminal',
+      `Local Time: ${new Date().toLocaleString()}`,
+      'Awaiting Authentication...'
+    ],
+    typeSpeed: 50,
+    backSpeed: 30,
+    loop: true
+  });
+
+  // Initialize terminal
+  initTerminal();
+
+  // Handle window resize
+  const handleResize = () => fitAddon?.fit();
+  window.addEventListener('resize', handleResize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', () => fitAddon?.fit());
+  terminal?.dispose();
 });
 </script>
 
 <style scoped>
 input::placeholder {
-  color: rgba(34, 197, 94, 0.5);
+  color: rgba(0, 180, 216, 0.5);
 }
 
 input:focus {
   outline: none;
-  caret-color: rgb(34, 197, 94);
+  caret-color: rgb(72, 202, 228);
 }
 
-@keyframes glitch {
-  0% { transform: translate(0) }
-  20% { transform: translate(-2px, 2px) }
-  40% { transform: translate(-2px, -2px) }
-  60% { transform: translate(2px, 2px) }
-  80% { transform: translate(2px, -2px) }
-  100% { transform: translate(0) }
+.xterm-viewport::-webkit-scrollbar {
+  width: 8px;
 }
 
-.glitch {
-  animation: glitch 0.2s ease-in-out infinite;
+.xterm-viewport::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+
+.xterm-viewport::-webkit-scrollbar-thumb {
+  background: rgba(0, 180, 216, 0.3);
+  border-radius: 4px;
+}
+
+.xterm-viewport::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 180, 216, 0.5);
 }
 </style>
