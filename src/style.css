@@ -6,8 +6,8 @@
 
 @layer base {
   :root {
-    --color-background: #f8f9fa;
-    --color-background-secondary: #ffffff;
+    --color-background: #ffffff;
+    --color-background-secondary: #f8f9fa;
     --color-accent: #4a5568;
     --color-accent-light: #2d3748;
   }
@@ -20,9 +20,17 @@
   }
 }
 
+html {
+  @apply min-h-screen bg-background transition-colors duration-300;
+}
+
 body {
-  font-family: var(--font-family);
-  @apply bg-background text-accent-light m-0 min-h-screen transition-colors duration-300;
+  font-family: 'Inter', sans-serif;
+  @apply min-h-screen bg-background text-accent transition-colors duration-300;
+}
+
+#app {
+  @apply min-h-screen bg-background transition-colors duration-300;
 }
 
 @layer components {
