@@ -5,7 +5,7 @@
       <div class="flex items-center justify-between h-16 px-4 border-b border-[#00b4d8]/20">
         <span class="text-[#00b4d8] font-mono text-lg">Admin Console</span>
         <button @click="toggleSidebar" class="lg:hidden text-[#00b4d8]">
-          <MenuIcon class="w-6 h-6" />
+          <Bars3Icon class="w-6 h-6" />
         </button>
       </div>
       
@@ -52,7 +52,7 @@ import {
   FolderIcon,
   AcademicCapIcon,
   UserIcon,
-  MenuIcon
+  Bars3Icon
 } from '@heroicons/vue/24/outline';
 
 const router = useRouter();
