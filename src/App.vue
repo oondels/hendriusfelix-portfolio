@@ -1,3 +1,22 @@
+<template>
+  <div class="min-h-screen bg-background transition-colors duration-300">
+    <template v-if="isTerminalMode">
+      <TerminalShell @exit="exitTerminal" />
+    </template>
+    <template v-else>
+      <Header 
+        @toggle-terminal="enterTerminal"
+        @toggle-certifications="toggleCertifications"
+      />
+      <MainContent />
+      <CertificationsModal 
+        :show="showCertifications"
+        @close="showCertifications = false"
+      />
+    </template>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import TerminalShell from './cli/TerminalShell.vue';
@@ -28,22 +47,3 @@ onMounted(() => {
   document.documentElement.classList.add(theme.value);
 });
 </script>
-
-<template>
-  <div class="min-h-screen bg-background transition-colors duration-300">
-    <template v-if="isTerminalMode">
-      <TerminalShell @exit="exitTerminal" />
-    </template>
-    <template v-else>
-      <Header 
-        @toggle-terminal="enterTerminal"
-        @toggle-certifications="toggleCertifications"
-      />
-      <MainContent />
-      <CertificationsModal 
-        :show="showCertifications"
-        @close="showCertifications = false"
-      />
-    </template>
-  </div>
-</template>
