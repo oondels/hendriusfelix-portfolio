@@ -8,14 +8,7 @@ import ProfileManager from '../components/admin/ProfileManager.vue';
 
 const routes = [
   {
-    path: '/terminal-access-47892',
-    component: AdminLogin,
-    meta: {
-      title: '404 Not Found'
-    }
-  },
-  {
-    path: '/admin',
+    path: '/',
     component: AdminLayout,
     children: [
       {
@@ -39,6 +32,13 @@ const routes = [
         name: 'profile-manager'
       }
     ]
+  },
+  {
+    path: '/terminal-access-47892',
+    component: AdminLogin,
+    meta: {
+      title: '404 Not Found'
+    }
   }
 ];
 
