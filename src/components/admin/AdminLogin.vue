@@ -77,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
@@ -100,6 +100,7 @@ const terminalContainer = ref<HTMLElement | null>(null);
 
 let terminal: Terminal | null = null;
 let fitAddon: FitAddon | null = null;
+let typedInstance: Typed | null = null;
 
 const bootLines = [
   'BIOS Version 3.0.1',
@@ -187,6 +188,21 @@ const initTerminal = () => {
   });
 };
 
+const initTyped = () => {
+  if (!welcomeEl.value) return;
+  
+  typedInstance = new Typed(welcomeEl.value, {
+    strings: [
+      'Welcome to Quantum-Secured Terminal',
+      `Local Time: ${new Date().toLocaleString()}`,
+      'Awaiting Authentication...'
+    ],
+    typeSpeed: 50,
+    backSpeed: 30,
+    loop: true
+  });
+};
+
 const simulateBoot = async () => {
   for (let i = 0; i <= 100; i++) {
     bootPhase.value = i;
@@ -225,24 +241,20 @@ const attemptLogin = async () => {
   isLoading.value = false;
 };
 
+// Watch for boot phase completion
+watch(() => bootPhase.value, (newValue) => {
+  if (newValue === 100) {
+    // Initialize components after boot sequence
+    setTimeout(() => {
+      initTyped();
+      initTerminal();
+    }, 100);
+  }
+});
+
 onMounted(() => {
   simulateBoot();
   
-  // Initialize welcome message
-  new Typed(welcomeEl.value!, {
-    strings: [
-      'Welcome to Quantum-Secured Terminal',
-      `Local Time: ${new Date().toLocaleString()}`,
-      'Awaiting Authentication...'
-    ],
-    typeSpeed: 50,
-    backSpeed: 30,
-    loop: true
-  });
-
-  // Initialize terminal
-  initTerminal();
-
   // Handle window resize
   const handleResize = () => fitAddon?.fit();
   window.addEventListener('resize', handleResize);
@@ -251,6 +263,7 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', () => fitAddon?.fit());
   terminal?.dispose();
+  typedInstance?.destroy();
 });
 </script>
 
