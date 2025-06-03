@@ -1,10 +1,10 @@
 <template>
-  <div class="p-6">
+  <div class="space-y-6">
     <div class="flex justify-between items-center mb-8">
-      <h2 class="text-2xl font-bold text-accent-light">Certifications Manager</h2>
+      <h2 class="text-2xl font-bold text-admin-accent">Certifications Manager</h2>
       <button
         @click="openNewCertModal"
-        class="px-4 py-2 bg-white text-black font-medium rounded hover:bg-accent transition-colors duration-200"
+        class="px-4 py-2 bg-admin-accent text-white font-medium rounded-lg hover:bg-admin-accent/90 transition-colors duration-200"
       >
         Add New Certification
       </button>
@@ -15,7 +15,7 @@
       <div
         v-for="cert in certifications"
         :key="cert.title"
-        class="bg-background-secondary p-6 rounded border border-accent/10"
+        class="bg-admin-card p-6 rounded-lg border border-admin-border"
       >
         <div class="flex justify-between items-start">
           <div class="flex-1">
@@ -26,20 +26,20 @@
                 class="w-12 h-12 object-cover rounded"
               />
               <div>
-                <h3 class="text-xl font-semibold text-accent-light">
+                <h3 class="text-xl font-semibold text-admin-accent-light">
                   {{ cert.title }}
                 </h3>
-                <p class="text-accent">{{ cert.institution }}</p>
+                <p class="text-admin-text">{{ cert.institution }}</p>
               </div>
             </div>
             
-            <p class="text-accent mb-4">{{ cert.description }}</p>
+            <p class="text-admin-text mb-4">{{ cert.description }}</p>
             
             <div class="flex flex-wrap gap-2">
               <span
                 v-for="skill in cert.skills"
                 :key="skill"
-                class="px-3 py-1 text-sm bg-accent/5 rounded-full text-accent"
+                class="px-3 py-1 text-sm bg-admin-accent/5 rounded-full text-admin-accent-light border border-admin-border"
               >
                 {{ skill }}
               </span>
@@ -49,15 +49,15 @@
           <div class="flex gap-2 ml-4">
             <button
               @click="editCertification(cert)"
-              class="p-2 text-accent hover:text-accent-light transition-colors duration-200"
+              class="p-2 text-admin-accent hover:text-admin-accent-light transition-colors duration-200"
             >
-              Edit
+              <PencilIcon class="w-5 h-5" />
             </button>
             <button
               @click="deleteCertification(cert.title)"
-              class="p-2 text-red-500 hover:text-red-600 transition-colors duration-200"
+              class="p-2 text-red-500 hover:text-red-400 transition-colors duration-200"
             >
-              Delete
+              <TrashIcon class="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -65,125 +65,156 @@
     </div>
 
     <!-- Certification Modal -->
-    <div
-      v-if="showModal"
-      class="fixed inset-0 bg-black/50 flex items-center justify-center p-4"
-    >
-      <div class="bg-background-secondary p-6 rounded-lg w-full max-w-2xl">
-        <h3 class="text-xl font-bold text-accent-light mb-6">
-          {{ editingCert ? 'Edit Certification' : 'New Certification' }}
-        </h3>
+    <TransitionRoot appear :show="showModal" as="template">
+      <Dialog as="div" @close="closeModal" class="relative z-50">
+        <TransitionChild
+          as="template"
+          enter="duration-300 ease-out"
+          enter-from="opacity-0"
+          enter-to="opacity-100"
+          leave="duration-200 ease-in"
+          leave-from="opacity-100"
+          leave-to="opacity-0"
+        >
+          <div class="fixed inset-0 bg-black/70 backdrop-blur-sm" />
+        </TransitionChild>
 
-        <form @submit.prevent="saveCertification" class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-accent mb-1">Title</label>
-            <input
-              v-model="certForm.title"
-              type="text"
-              class="w-full px-4 py-2 bg-background border border-accent/10 rounded"
-              required
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-accent mb-1">Institution</label>
-            <input
-              v-model="certForm.institution"
-              type="text"
-              class="w-full px-4 py-2 bg-background border border-accent/10 rounded"
-              required
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-accent mb-1">Year</label>
-            <input
-              v-model="certForm.year"
-              type="text"
-              class="w-full px-4 py-2 bg-background border border-accent/10 rounded"
-              required
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-accent mb-1">Description</label>
-            <textarea
-              v-model="certForm.description"
-              rows="3"
-              class="w-full px-4 py-2 bg-background border border-accent/10 rounded"
-              required
-            ></textarea>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-accent mb-1">Impact</label>
-            <textarea
-              v-model="certForm.impact"
-              rows="2"
-              class="w-full px-4 py-2 bg-background border border-accent/10 rounded"
-              required
-            ></textarea>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-accent mb-1">Logo URL</label>
-            <input
-              v-model="certForm.logo"
-              type="url"
-              class="w-full px-4 py-2 bg-background border border-accent/10 rounded"
-              required
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-accent mb-1">Skills</label>
-            <input
-              v-model="skillInput"
-              @keydown.enter.prevent="addSkill"
-              type="text"
-              placeholder="Press Enter to add"
-              class="w-full px-4 py-2 bg-background border border-accent/10 rounded"
-            />
-            <div class="flex flex-wrap gap-2 mt-2">
-              <span
-                v-for="skill in certForm.skills"
-                :key="skill"
-                class="px-3 py-1 text-sm bg-accent/5 rounded-full text-accent flex items-center"
-              >
-                {{ skill }}
-                <button
-                  @click="removeSkill(skill)"
-                  class="ml-2 text-accent hover:text-accent-light"
-                >
-                  ×
-                </button>
-              </span>
-            </div>
-          </div>
-
-          <div class="flex justify-end gap-4 mt-6">
-            <button
-              type="button"
-              @click="closeModal"
-              class="px-4 py-2 text-accent hover:text-accent-light transition-colors duration-200"
+        <div class="fixed inset-0 overflow-y-auto">
+          <div class="flex min-h-full items-center justify-center p-4">
+            <TransitionChild
+              as="template"
+              enter="duration-300 ease-out"
+              enter-from="opacity-0 scale-95"
+              enter-to="opacity-100 scale-100"
+              leave="duration-200 ease-in"
+              leave-from="opacity-100 scale-100"
+              leave-to="opacity-0 scale-95"
             >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              class="px-4 py-2 bg-white text-black font-medium rounded hover:bg-accent transition-colors duration-200"
-            >
-              {{ editingCert ? 'Update' : 'Create' }}
-            </button>
+              <DialogPanel class="w-full max-w-2xl bg-admin-card rounded-lg shadow-xl border border-admin-border">
+                <div class="p-6">
+                  <DialogTitle class="text-xl font-bold text-admin-accent mb-6">
+                    {{ editingCert ? 'Edit Certification' : 'New Certification' }}
+                  </DialogTitle>
+
+                  <form @submit.prevent="saveCertification" class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium text-admin-text mb-1">Title</label>
+                      <input
+                        v-model="certForm.title"
+                        type="text"
+                        class="admin-input"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium text-admin-text mb-1">Institution</label>
+                      <input
+                        v-model="certForm.institution"
+                        type="text"
+                        class="admin-input"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium text-admin-text mb-1">Year</label>
+                      <input
+                        v-model="certForm.year"
+                        type="text"
+                        class="admin-input"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium text-admin-text mb-1">Description</label>
+                      <textarea
+                        v-model="certForm.description"
+                        rows="3"
+                        class="admin-input"
+                        required
+                      ></textarea>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium text-admin-text mb-1">Impact</label>
+                      <textarea
+                        v-model="certForm.impact"
+                        rows="2"
+                        class="admin-input"
+                        required
+                      ></textarea>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium text-admin-text mb-1">Logo URL</label>
+                      <input
+                        v-model="certForm.logo"
+                        type="url"
+                        class="admin-input"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-medium text-admin-text mb-1">Skills</label>
+                      <div class="flex items-center gap-2">
+                        <input
+                          v-model="skillInput"
+                          @keydown.enter.prevent="addSkill"
+                          type="text"
+                          placeholder="Press Enter to add"
+                          class="admin-input"
+                        />
+                      </div>
+                      <div class="flex flex-wrap gap-2 mt-2">
+                        <span
+                          v-for="skill in certForm.skills"
+                          :key="skill"
+                          class="px-3 py-1 text-sm bg-admin-accent/5 rounded-full text-admin-accent-light border border-admin-border flex items-center"
+                        >
+                          {{ skill }}
+                          <button
+                            @click="removeSkill(skill)"
+                            class="ml-2 text-admin-accent hover:text-admin-accent-light"
+                          >
+                            ×
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="flex justify-end gap-4 mt-6">
+                      <button
+                        type="button"
+                        @click="closeModal"
+                        class="px-4 py-2 text-admin-text hover:text-admin-accent-light transition-colors duration-200"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        class="admin-button"
+                      >
+                        {{ editingCert ? 'Update' : 'Create' }}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </DialogPanel>
+            </TransitionChild>
           </div>
-        </form>
-      </div>
-    </div>
+        </div>
+      </Dialog>
+    </TransitionRoot>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
+import { Dialog, DialogPanel, DialogTitle, TransitionRoot, TransitionChild } from '@headlessui/vue';
+import { PencilIcon, TrashIcon } from '@heroicons/vue/24/outline';
 
 interface Certification {
   title: string;
