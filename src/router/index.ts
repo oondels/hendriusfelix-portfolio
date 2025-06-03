@@ -5,10 +5,11 @@ import AdminDashboard from '../components/admin/AdminDashboard.vue';
 import ProjectsManager from '../components/admin/ProjectsManager.vue';
 import CertificationsManager from '../components/admin/CertificationsManager.vue';
 import ProfileManager from '../components/admin/ProfileManager.vue';
+import MainContent from '../components/MainContent.vue'
 
 const routes = [
   {
-    path: '/',
+    path: '/admin',
     component: AdminLayout,
     children: [
       {
@@ -39,7 +40,14 @@ const routes = [
     meta: {
       title: '404 Not Found'
     }
-  }
+  },
+  {
+    path: '/',
+    component: MainContent,
+    meta: {
+      title: 'Main'
+    }
+  },
 ];
 
 const router = createRouter({

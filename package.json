@@ -10,18 +10,18 @@
     "cli": "nodemon --watch './**/*.ts' --exec ts-node ./src/cli/commands/index.ts"
   },
   "dependencies": {
-    "@vueuse/core": "^10.7.0",
-    "vue": "^3.4.38",
-    "vue-router": "^4.2.5",
-    "@vueuse/head": "^2.0.0",
-    "sharp": "^0.33.2",
-    "@vueuse/motion": "^2.0.0",
-    "typed.js": "^2.1.0",
-    "xterm": "^5.3.0",
-    "xterm-addon-fit": "^0.8.0",
     "@headlessui/vue": "^1.7.19",
     "@heroicons/vue": "^2.1.1",
-    "vue-toastification": "^2.0.0-rc.5"
+    "@vueuse/core": "^10.7.0",
+    "@vueuse/head": "^2.0.0",
+    "@vueuse/motion": "^2.0.0",
+    "sharp": "^0.33.2",
+    "typed.js": "^2.1.0",
+    "vue": "^3.4.38",
+    "vue-router": "^4.2.5",
+    "vue-toastification": "^2.0.0-rc.5",
+    "xterm": "^5.3.0",
+    "xterm-addon-fit": "^0.8.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
