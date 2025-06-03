@@ -5,32 +5,32 @@
       <div
         v-for="stat in stats"
         :key="stat.name"
-        class="bg-[#0f0f15] p-6 rounded-lg border border-[#00b4d8]/20"
+        class="bg-admin-card p-6 rounded-lg border border-admin-border"
       >
         <div class="flex items-center">
-          <component :is="stat.icon" class="w-8 h-8 text-[#00b4d8]" />
+          <component :is="stat.icon" class="w-8 h-8 text-admin-accent" />
           <div class="ml-4">
-            <p class="text-sm text-[#90e0ef]">{{ stat.name }}</p>
-            <p class="text-2xl font-semibold text-[#00b4d8]">{{ stat.value }}</p>
+            <p class="text-sm text-admin-accent-light">{{ stat.name }}</p>
+            <p class="text-2xl font-semibold text-admin-accent">{{ stat.value }}</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Recent Activity -->
-    <div class="bg-[#0f0f15] rounded-lg border border-[#00b4d8]/20">
+    <div class="bg-admin-card rounded-lg border border-admin-border">
       <div class="p-6">
-        <h2 class="text-xl text-[#00b4d8] font-mono mb-4">Recent Activity</h2>
+        <h2 class="text-xl text-admin-accent font-mono mb-4">Recent Activity</h2>
         <div class="space-y-4">
           <div
             v-for="(activity, index) in recentActivity"
             :key="index"
-            class="flex items-center p-4 bg-[#0a0a0f] rounded-lg"
+            class="flex items-center p-4 bg-admin-bg rounded-lg"
           >
-            <component :is="activity.icon" class="w-5 h-5 text-[#90e0ef]" />
+            <component :is="activity.icon" class="w-5 h-5 text-admin-accent-light" />
             <div class="ml-4">
-              <p class="text-[#90e0ef]">{{ activity.description }}</p>
-              <p class="text-sm text-[#00b4d8]/60">{{ activity.timestamp }}</p>
+              <p class="text-admin-accent-light">{{ activity.description }}</p>
+              <p class="text-sm text-admin-accent/60">{{ activity.timestamp }}</p>
             </div>
           </div>
         </div>
@@ -42,15 +42,65 @@
       <div
         v-for="action in quickActions"
         :key="action.name"
-        class="bg-[#0f0f15] p-6 rounded-lg border border-[#00b4d8]/20 cursor-pointer hover:bg-[#00b4d8]/5 transition-colors duration-200"
+        class="bg-admin-card p-6 rounded-lg border border-admin-border cursor-pointer hover:bg-admin-accent/5 transition-colors duration-200"
         @click="action.onClick"
       >
         <div class="flex items-center">
-          <component :is="action.icon" class="w-6 h-6 text-[#00b4d8]" />
+          <component :is="action.icon" class="w-6 h-6 text-admin-accent" />
           <div class="ml-4">
-            <h3 class="text-[#90e0ef]">{{ action.name }}</h3>
-            <p class="text-sm text-[#00b4d8]/60">{{ action.description }}</p>
+            <h3 class="text-admin-accent-light">{{ action.name }}</h3>
+            <p class="text-sm text-admin-accent/60">{{ action.description }}</p>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Projects Table -->
+    <div class="bg-admin-card rounded-lg border border-admin-border overflow-hidden">
+      <div class="p-6">
+        <h2 class="text-xl text-admin-accent font-mono mb-4">Recent Projects</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-admin-border">
+                <th class="text-left py-3 px-4 text-admin-accent-light font-medium">Project</th>
+                <th class="text-left py-3 px-4 text-admin-accent-light font-medium">Status</th>
+                <th class="text-left py-3 px-4 text-admin-accent-light font-medium">Last Updated</th>
+                <th class="text-left py-3 px-4 text-admin-accent-light font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="project in recentProjects" :key="project.id" class="border-b border-admin-border">
+                <td class="py-3 px-4">
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 rounded bg-admin-accent/10 flex items-center justify-center">
+                      <component :is="project.icon" class="w-4 h-4 text-admin-accent" />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-admin-text font-medium">{{ project.name }}</p>
+                      <p class="text-sm text-admin-text-dim">{{ project.description }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3 px-4">
+                  <span :class="[
+                    'px-2 py-1 text-xs rounded-full',
+                    project.status === 'Active' ? 'bg-green-500/10 text-green-500' :
+                    project.status === 'In Progress' ? 'bg-yellow-500/10 text-yellow-500' :
+                    'bg-admin-accent/10 text-admin-accent'
+                  ]">
+                    {{ project.status }}
+                  </span>
+                </td>
+                <td class="py-3 px-4 text-admin-text-dim">{{ project.lastUpdated }}</td>
+                <td class="py-3 px-4">
+                  <button class="text-admin-accent hover:text-admin-accent-light transition-colors duration-200">
+                    View Details
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -66,7 +116,10 @@ import {
   FolderIcon,
   PencilIcon,
   TrashIcon,
-  PlusIcon
+  PlusIcon,
+  CodeBracketIcon,
+  BeakerIcon,
+  CubeIcon
 } from '@heroicons/vue/24/outline';
 
 const router = useRouter();
@@ -108,6 +161,33 @@ const quickActions = [
     description: 'Modify your personal information',
     icon: UserIcon,
     onClick: () => router.push('/admin/profile')
+  }
+];
+
+const recentProjects = [
+  {
+    id: 1,
+    name: 'SmartGrid Monitor',
+    description: 'IoT-based power grid monitoring',
+    status: 'Active',
+    lastUpdated: '1 hour ago',
+    icon: BeakerIcon
+  },
+  {
+    id: 2,
+    name: 'Factory Automation',
+    description: 'Industrial automation system',
+    status: 'In Progress',
+    lastUpdated: '3 hours ago',
+    icon: CubeIcon
+  },
+  {
+    id: 3,
+    name: 'API Gateway',
+    description: 'Microservices integration',
+    status: 'Planning',
+    lastUpdated: '1 day ago',
+    icon: CodeBracketIcon
   }
 ];
 </script>
