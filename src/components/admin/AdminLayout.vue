@@ -3,7 +3,7 @@
     <!-- Sidebar -->
     <div class="fixed inset-y-0 left-0 w-64 bg-admin-card border-r border-admin-border">
       <div class="flex items-center justify-between h-16 px-4 border-b border-admin-border">
-        <span class="text-admin-accent font-mono text-lg">Admin Console</span>
+        <span class="text-admin font-mono text-lg">Admin Console</span>
         <button @click="toggleSidebar" class="lg:hidden text-admin-accent">
           <Bars3Icon class="w-6 h-6" />
         </button>
