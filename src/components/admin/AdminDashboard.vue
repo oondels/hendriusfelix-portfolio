@@ -8,10 +8,10 @@
         class="bg-admin-card p-6 rounded-lg border border-admin-border"
       >
         <div class="flex items-center">
-          <component :is="stat.icon" class="w-8 h-8 text-admin-accent" />
+          <component :is="stat.icon" class="w-8 h-8 text-admin" />
           <div class="ml-4">
-            <p class="text-sm text-admin-accent-light">{{ stat.name }}</p>
-            <p class="text-2xl font-semibold text-admin-accent">{{ stat.value }}</p>
+            <p class="text-sm text-admin-light">{{ stat.name }}</p>
+            <p class="text-2xl font-semibold text-admin">{{ stat.value }}</p>
           </div>
         </div>
       </div>
@@ -20,17 +20,17 @@
     <!-- Recent Activity -->
     <div class="bg-admin-card rounded-lg border border-admin-border">
       <div class="p-6">
-        <h2 class="text-xl text-admin-accent font-mono mb-4">Recent Activity</h2>
+        <h2 class="text-xl text-admin font-mono mb-4">Recent Activity</h2>
         <div class="space-y-4">
           <div
             v-for="(activity, index) in recentActivity"
             :key="index"
             class="flex items-center p-4 bg-admin-bg rounded-lg"
           >
-            <component :is="activity.icon" class="w-5 h-5 text-admin-accent-light" />
+            <component :is="activity.icon" class="w-5 h-5 text-admin-light" />
             <div class="ml-4">
-              <p class="text-admin-accent-light">{{ activity.description }}</p>
-              <p class="text-sm text-admin-accent/60">{{ activity.timestamp }}</p>
+              <p class="text-admin-light">{{ activity.description }}</p>
+              <p class="text-sm text-admin/60">{{ activity.timestamp }}</p>
             </div>
           </div>
         </div>
@@ -42,14 +42,14 @@
       <div
         v-for="action in quickActions"
         :key="action.name"
-        class="bg-admin-card p-6 rounded-lg border border-admin-border cursor-pointer hover:bg-admin-accent/5 transition-colors duration-200"
+        class="bg-admin-card p-6 rounded-lg border border-admin-border cursor-pointer hover:bg-admin/5 transition-colors duration-200"
         @click="action.onClick"
       >
         <div class="flex items-center">
-          <component :is="action.icon" class="w-6 h-6 text-admin-accent" />
+          <component :is="action.icon" class="w-6 h-6 text-admin" />
           <div class="ml-4">
-            <h3 class="text-admin-accent-light">{{ action.name }}</h3>
-            <p class="text-sm text-admin-accent/60">{{ action.description }}</p>
+            <h3 class="text-admin-light">{{ action.name }}</h3>
+            <p class="text-sm text-admin/60">{{ action.description }}</p>
           </div>
         </div>
       </div>
@@ -58,23 +58,23 @@
     <!-- Recent Projects Table -->
     <div class="bg-admin-card rounded-lg border border-admin-border overflow-hidden">
       <div class="p-6">
-        <h2 class="text-xl text-admin-accent font-mono mb-4">Recent Projects</h2>
+        <h2 class="text-xl text-admin font-mono mb-4">Recent Projects</h2>
         <div class="overflow-x-auto">
           <table class="w-full">
             <thead>
               <tr class="border-b border-admin-border">
-                <th class="text-left py-3 px-4 text-admin-accent-light font-medium">Project</th>
-                <th class="text-left py-3 px-4 text-admin-accent-light font-medium">Status</th>
-                <th class="text-left py-3 px-4 text-admin-accent-light font-medium">Last Updated</th>
-                <th class="text-left py-3 px-4 text-admin-accent-light font-medium">Actions</th>
+                <th class="text-left py-3 px-4 text-admin-light font-medium">Project</th>
+                <th class="text-left py-3 px-4 text-admin-light font-medium">Status</th>
+                <th class="text-left py-3 px-4 text-admin-light font-medium">Last Updated</th>
+                <th class="text-left py-3 px-4 text-admin-light font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="project in recentProjects" :key="project.id" class="border-b border-admin-border">
                 <td class="py-3 px-4">
                   <div class="flex items-center">
-                    <div class="w-8 h-8 rounded bg-admin-accent/10 flex items-center justify-center">
-                      <component :is="project.icon" class="w-4 h-4 text-admin-accent" />
+                    <div class="w-8 h-8 rounded bg-admin/10 flex items-center justify-center">
+                      <component :is="project.icon" class="w-4 h-4 text-admin" />
                     </div>
                     <div class="ml-3">
                       <p class="text-admin-text font-medium">{{ project.name }}</p>
@@ -87,14 +87,14 @@
                     'px-2 py-1 text-xs rounded-full',
                     project.status === 'Active' ? 'bg-green-500/10 text-green-500' :
                     project.status === 'In Progress' ? 'bg-yellow-500/10 text-yellow-500' :
-                    'bg-admin-accent/10 text-admin-accent'
+                    'bg-admin/10 text-admin'
                   ]">
                     {{ project.status }}
                   </span>
                 </td>
                 <td class="py-3 px-4 text-admin-text-dim">{{ project.lastUpdated }}</td>
                 <td class="py-3 px-4">
-                  <button class="text-admin-accent hover:text-admin-accent-light transition-colors duration-200">
+                  <button class="text-admin hover:text-admin-light transition-colors duration-200">
                     View Details
                   </button>
                 </td>
