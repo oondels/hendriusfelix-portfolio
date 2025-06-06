@@ -4,7 +4,7 @@
     <div class="fixed inset-y-0 left-0 w-64 bg-admin-card border-r border-admin-border">
       <div class="flex items-center justify-between h-16 px-4 border-b border-admin-border">
         <span class="text-admin font-mono text-lg">Admin Console</span>
-        <button @click="toggleSidebar" class="lg:hidden text-admin-accent">
+        <button @click="toggleSidebar" class="lg:hidden text-admin">
           <Bars3Icon class="w-6 h-6" />
         </button>
       </div>
@@ -17,8 +17,8 @@
           class="flex items-center px-4 py-2 mt-2 rounded-lg transition-colors duration-200"
           :class="[
             currentRoute === item.to 
-              ? 'bg-admin-accent/20 text-admin-accent' 
-              : 'text-admin-text hover:bg-admin-accent/10'
+              ? 'bg-admin/20 text-admin' 
+              : 'text-admin-text hover:bg-admin/10'
           ]"
         >
           <component :is="item.icon" class="w-5 h-5 mr-3" />
@@ -30,11 +30,11 @@
     <!-- Main Content -->
     <div class="lg:pl-64">
       <div class="flex items-center justify-between h-16 px-4 bg-admin-card border-b border-admin-border">
-        <h1 class="text-admin-accent font-mono">{{ currentPageTitle }}</h1>
+        <h1 class="text-admin font-mono">{{ currentPageTitle }}</h1>
         <div class="flex items-center space-x-4">
           <button
             @click="logout"
-            class="px-4 py-2 text-admin-accent border border-admin-border rounded-lg hover:bg-admin-accent/10 transition-colors duration-200"
+            class="px-4 py-2 text-admin border border-admin-border rounded-lg hover:bg-admin/10 transition-colors duration-200"
           >
             Logout
           </button>
