@@ -1,10 +1,10 @@
 <template>
   <div class="space-y-6">
     <div class="flex justify-between items-center mb-8">
-      <h2 class="text-2xl font-bold text-admin-accent">Projects Manager</h2>
+      <h2 class="text-2xl font-bold text-admin">Projects Manager</h2>
       <button
         @click="openNewProjectModal"
-        class="px-4 py-2 bg-admin-accent text-white font-medium rounded-lg hover:bg-admin-accent/90 transition-colors duration-200"
+        class="px-4 py-2 bg-admin text-white font-medium rounded-lg hover:bg-admin/90 transition-colors duration-200"
       >
         Add New Project
       </button>
@@ -19,7 +19,7 @@
       >
         <div class="flex justify-between items-start">
           <div>
-            <h3 class="text-xl font-semibold text-admin-accent-light mb-2">
+            <h3 class="text-xl font-semibold text-admin-light mb-2">
               {{ project.title }}
             </h3>
             <p class="text-admin-text mb-4">{{ project.summary }}</p>
@@ -28,7 +28,7 @@
               <span
                 v-for="tech in project.technologies"
                 :key="tech"
-                class="px-3 py-1 text-sm bg-admin-accent/5 rounded-full text-admin-accent-light border border-admin-border"
+                class="px-3 py-1 text-sm bg-admin/5 rounded-full text-admin-light border border-admin-border"
               >
                 {{ tech }}
               </span>
@@ -38,7 +38,7 @@
           <div class="flex gap-2">
             <button
               @click="editProject(project)"
-              class="p-2 text-admin-accent hover:text-admin-accent-light transition-colors duration-200"
+              class="p-2 text-admin hover:text-admin-light transition-colors duration-200"
             >
               <PencilIcon class="w-5 h-5" />
             </button>
@@ -81,7 +81,7 @@
             >
               <DialogPanel class="w-full max-w-2xl bg-admin-card rounded-lg shadow-xl border border-admin-border">
                 <div class="p-6">
-                  <DialogTitle class="text-xl font-bold text-admin-accent mb-6">
+                  <DialogTitle class="text-xl font-bold text-admin mb-6">
                     {{ editingProject ? 'Edit Project' : 'New Project' }}
                   </DialogTitle>
 
@@ -131,12 +131,12 @@
                         <span
                           v-for="tech in projectForm.technologies"
                           :key="tech"
-                          class="px-3 py-1 text-sm bg-admin-accent/5 rounded-full text-admin-accent-light border border-admin-border flex items-center"
+                          class="px-3 py-1 text-sm bg-admin/5 rounded-full text-admin-light border border-admin-border flex items-center"
                         >
                           {{ tech }}
                           <button
                             @click="removeTechnology(tech)"
-                            class="ml-2 text-admin-accent hover:text-admin-accent-light"
+                            class="ml-2 text-admin hover:text-admin-light"
                           >
                             ×
                           </button>
@@ -148,7 +148,7 @@
                       <button
                         type="button"
                         @click="closeModal"
-                        class="px-4 py-2 text-admin-text hover:text-admin-accent-light transition-colors duration-200"
+                        class="px-4 py-2 text-admin-text hover:text-admin-light transition-colors duration-200"
                       >
                         Cancel
                       </button>
