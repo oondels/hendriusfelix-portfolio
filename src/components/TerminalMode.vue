@@ -165,12 +165,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="terminal-mode min-h-screen bg-black text-green-400 font-mono p-4 flex flex-col">
+  <div class="terminal-mode min-h-screen bg-[#282A36] text-[#F8F8F2] font-mono p-4 flex flex-col">
     <div class="flex justify-between items-center mb-4">
       <div class="text-xl">portfolio.dev</div>
-      <button 
-        @click="$emit('exit-terminal')" 
-        class="px-3 py-1 bg-gray-800 text-green-400 rounded hover:bg-gray-700 transition-colors duration-200"
+      <button
+        @click="$emit('exit-terminal')"
+        class="px-3 py-1 bg-[#44475a] text-[#F8F8F2] rounded hover:bg-[#6272a4] transition-colors duration-200"
       >
         Sair [X]
       </button>
@@ -179,7 +179,7 @@ onMounted(() => {
     <div ref="terminalRef" class="flex-1 overflow-y-auto mb-4">
       <div v-for="(cmd, index) in commands" :key="index" class="mb-2">
         <div class="flex">
-          <span class="text-green-500 mr-2">hendrius@portfolio.dev:~$</span>
+          <span class="text-[#BD93F9] mr-2">hendrius@portfolio.dev:~$</span>
           <span>{{ cmd.input }}</span>
         </div>
         <TerminalOutput :content="cmd.output" />

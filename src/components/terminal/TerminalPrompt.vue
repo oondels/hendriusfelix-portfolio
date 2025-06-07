@@ -32,7 +32,7 @@ const handleKeydown = (e: KeyboardEvent) => {
 
 <template>
   <div class="terminal-prompt flex items-center">
-    <span class="text-green-500 mr-2">hendrius@portfolio.dev:~$</span>
+    <span class="text-[#BD93F9] mr-2">hendrius@portfolio.dev:~$</span>
     <input
       ref="inputRef"
       type="text"
@@ -40,9 +40,20 @@ const handleKeydown = (e: KeyboardEvent) => {
       @input="handleInput"
       @keydown="handleKeydown"
       :disabled="disabled"
-      class="bg-transparent outline-none flex-1 text-green-400 caret-green-400"
+      class="bg-transparent outline-none flex-1 text-[#F8F8F2] caret-[#BD93F9] animate-[blink_1s_steps(2,start)_infinite]"
       autocomplete="off"
       autofocus
     />
   </div>
 </template>
+
+<style scoped>
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+input.animate-\[blink_1s_steps\(2,start\)_infinite\] {
+  animation: blink 1s steps(2, start) infinite;
+}
+</style>
