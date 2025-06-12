@@ -3,7 +3,7 @@
     <!-- Sidebar -->
     <div class="fixed inset-y-0 left-0 w-64 bg-admin-card border-r border-admin-border">
       <div class="flex items-center justify-between h-16 px-4 border-b border-admin-border">
-        <span class="text-admin font-mono text-lg">Admin Console</span>
+        <span class="text-admin font-mono text-lg">Central</span>
         <button @click="toggleSidebar" class="lg:hidden text-admin">
           <Bars3Icon class="w-6 h-6" />
         </button>
@@ -36,7 +36,7 @@
             @click="logout"
             class="px-4 py-2 text-admin border border-admin-border rounded-lg hover:bg-admin/10 transition-colors duration-200"
           >
-            Logout
+            Sair
           </button>
         </div>
       </div>

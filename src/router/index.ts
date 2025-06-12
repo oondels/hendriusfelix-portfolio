@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import AdminLogin from '../components/admin/AdminLogin.vue';
+// import AdminLogin from '../components/admin/AdminLogin.vue';
 import AdminLayout from '../components/admin/AdminLayout.vue';
 import AdminDashboard from '../components/admin/AdminDashboard.vue';
 import ProjectsManager from '../components/admin/ProjectsManager.vue';
@@ -42,13 +42,13 @@ const routes = [
       title: 'Terminal Mode'
     }
   },
-  {
-    path: '/terminal-access-47892',
-    component: AdminLogin,
-    meta: {
-      title: '404 Not Found'
-    }
-  },
+  // {
+  //   path: '/terminal-access-47892',
+  //   component: AdminLogin,
+  //   meta: {
+  //     title: '404 Not Found'
+  //   }
+  // },
   {
     path: '/',
     component: MainContent,

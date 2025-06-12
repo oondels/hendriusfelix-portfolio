@@ -20,7 +20,7 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   const message = error.message || "Erro interno no servidor.";
   console.error(`Erro no método ${req.method} em ${req.originalUrl} - ${message}`);
 
-  res.status(error.statusCode).json({
+  res.status(500).json({
     message
   });
   return;

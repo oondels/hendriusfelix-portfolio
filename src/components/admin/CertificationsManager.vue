@@ -6,7 +6,7 @@
         @click="openNewCertModal"
         class="px-4 py-2 bg-admin-accent text-white font-medium rounded-lg hover:bg-admin-accent/90 transition-colors duration-200"
       >
-        Add New Certification
+        Adicionar Novo Certificado
       </button>
     </div>
 

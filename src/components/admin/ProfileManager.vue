@@ -1,23 +1,23 @@
 <template>
   <div class="space-y-6">
     <div class="flex justify-between items-center mb-8">
-      <h2 class="text-2xl font-bold text-admin-accent">Profile Manager</h2>
+      <h2 class="text-2xl font-bold text-admin-accent">Gerenciamento de Perfil</h2>
       <button
         @click="saveProfile"
         class="px-4 py-2 bg-admin-accent text-white font-medium rounded-lg hover:bg-admin-accent/90 transition-colors duration-200"
       >
-        Save Changes
+        Salvar
       </button>
     </div>
 
     <div class="grid md:grid-cols-2 gap-8">
       <!-- Personal Information -->
       <div class="bg-admin-card p-6 rounded-lg border border-admin-border">
-        <h3 class="text-xl font-semibold text-admin-accent-light mb-6">Personal Information</h3>
+        <h3 class="text-xl font-semibold text-admin-accent-light mb-6">Informações Pessoais</h3>
         
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-admin-text mb-1">Full Name</label>
+            <label class="block text-sm font-medium text-admin-text mb-1">Nome Completo</label>
             <input
               v-model="profile.name"
               type="text"
@@ -26,7 +26,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-admin-text mb-1">Title</label>
+            <label class="block text-sm font-medium text-admin-text mb-1">Título</label>
             <input
               v-model="profile.title"
               type="text"
@@ -44,7 +44,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-admin-text mb-1">Location</label>
+            <label class="block text-sm font-medium text-admin-text mb-1">Localização</label>
             <input
               v-model="profile.location"
               type="text"
@@ -56,7 +56,7 @@
 
       <!-- Professional Summary -->
       <div class="bg-admin-card p-6 rounded-lg border border-admin-border">
-        <h3 class="text-xl font-semibold text-admin-accent-light mb-6">Professional Summary</h3>
+        <h3 class="text-xl font-semibold text-admin-accent-light mb-6">Resumo Profissional</h3>
         
         <div class="space-y-4">
           <div>
@@ -69,7 +69,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-admin-text mb-1">Years of Experience</label>
+            <label class="block text-sm font-medium text-admin-text mb-1">Anos de Experiência</label>
             <input
               v-model="profile.experience"
               type="number"
@@ -81,7 +81,7 @@
 
       <!-- Social Links -->
       <div class="bg-admin-card p-6 rounded-lg border border-admin-border">
-        <h3 class="text-xl font-semibold text-admin-accent-light mb-6">Social Links</h3>
+        <h3 class="text-xl font-semibold text-admin-accent-light mb-6">Redes Sociais</h3>
         
         <div class="space-y-4">
           <div>
@@ -115,7 +115,7 @@
 
       <!-- Profile Image -->
       <div class="bg-admin-card p-6 rounded-lg border border-admin-border">
-        <h3 class="text-xl font-semibold text-admin-accent-light mb-6">Profile Image</h3>
+        <h3 class="text-xl font-semibold text-admin-accent-light mb-6">Imagem de Perfil</h3>
         
         <div class="space-y-4">
           <div class="flex items-center gap-4">
