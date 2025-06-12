@@ -35,7 +35,6 @@ const handleSubmit = async () => {
   errorMessage.value = '';
 
   try {
-    // TODO: Implement actual form submission
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     showSuccess.value = true;
@@ -92,12 +91,12 @@ const socialLinks = [
 </script>
 
 <template>
-  <section id="contact" class="section-container bg-[#111111]">
+  <section id="contact" class="section-container bg-[#111111] mt-5">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold text-white mb-4">Let's Build Something Together</h2>
+        <h2 class="text-4xl font-bold text-white mb-4">Vamos construir algo juntos</h2>
         <p class="text-lg text-[#D3D3D3]">
-          Whether it's a project, idea, or opportunity — I'd love to hear from you.
+          Projeto, ideia ou oportunidade — adoraria ouvir você.
         </p>
       </div>
 
@@ -106,14 +105,14 @@ const socialLinks = [
         <div class="bg-white/5 rounded-xl p-8 backdrop-blur-sm border border-white/10">
           <form @submit.prevent="handleSubmit" class="space-y-6">
             <div>
-              <label for="name" class="block text-sm font-medium text-[#D3D3D3] mb-2">Name</label>
+              <label for="name" class="block text-sm font-medium text-[#D3D3D3] mb-2">Nome</label>
               <input
                 id="name"
                 v-model="formData.name"
                 type="text"
                 required
                 class="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-[#888] focus:outline-none focus:ring-2 focus:ring-white/20 transition-all duration-300"
-                placeholder="Your name"
+                placeholder="Seu Nome/Nome da Empresa"
               />
             </div>
 
@@ -125,30 +124,30 @@ const socialLinks = [
                 type="email"
                 required
                 class="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-[#888] focus:outline-none focus:ring-2 focus:ring-white/20 transition-all duration-300"
-                placeholder="your@email.com"
+                placeholder="seu@email.com"
               />
             </div>
 
             <div>
-              <label for="subject" class="block text-sm font-medium text-[#D3D3D3] mb-2">Subject (Optional)</label>
+              <label for="subject" class="block text-sm font-medium text-[#D3D3D3] mb-2">Assunto (Opcional)</label>
               <input
                 id="subject"
                 v-model="formData.subject"
                 type="text"
                 class="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-[#888] focus:outline-none focus:ring-2 focus:ring-white/20 transition-all duration-300"
-                placeholder="What's this about?"
+                placeholder="Sobre o que se trata?"
               />
             </div>
 
             <div>
-              <label for="message" class="block text-sm font-medium text-[#D3D3D3] mb-2">Message</label>
+              <label for="message" class="block text-sm font-medium text-[#D3D3D3] mb-2">Mensagem</label>
               <textarea
                 id="message"
                 v-model="formData.message"
                 required
                 rows="4"
                 class="w-full px-4 py-3 bg-white/5 rounded-lg border border-white/10 text-white placeholder-[#888] focus:outline-none focus:ring-2 focus:ring-white/20 transition-all duration-300 resize-none"
-                placeholder="Your message here..."
+                placeholder="Sua Mensagem..."
               ></textarea>
             </div>
 
@@ -162,14 +161,14 @@ const socialLinks = [
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
-                Sending...
+                Enviando...
               </span>
-              <span v-else>Send Message</span>
+              <span v-else>Mandar Mensagem</span>
             </button>
 
             <!-- Success Message -->
             <div v-if="showSuccess" class="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
-              <p class="text-green-400 text-center">Message sent successfully! I'll get back to you soon.</p>
+              <p class="text-green-400 text-center">Mensagem enviada com sucesso! Vou responder em breve.</p>
             </div>
 
             <!-- Error Message -->
@@ -183,7 +182,7 @@ const socialLinks = [
         <div class="space-y-8">
           <!-- Direct Contact -->
           <div class="bg-white/5 rounded-xl p-8 backdrop-blur-sm border border-white/10">
-            <h3 class="text-xl font-semibold text-white mb-6">Get in Touch</h3>
+            <h3 class="text-xl font-semibold text-white mb-6">Entre em Contato</h3>
             <div class="space-y-6">
               <a
                 v-for="contact in contactInfo"
@@ -206,7 +205,7 @@ const socialLinks = [
 
           <!-- Social Links -->
           <div class="bg-white/5 rounded-xl p-8 backdrop-blur-sm border border-white/10">
-            <h3 class="text-xl font-semibold text-white mb-6">Connect</h3>
+            <h3 class="text-xl font-semibold text-white mb-6">Conecte-se Comigo</h3>
             <div class="flex gap-4">
               <a
                 v-for="social in socialLinks"

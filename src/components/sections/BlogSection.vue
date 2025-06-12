@@ -82,7 +82,7 @@ const formatDate = (dateString: string) => {
 </script>
 
 <template>
-  <section id="blog" class="section-container bg-[#111111]">
+  <section id="blog" class="section-container bg-[#111111] mt-5">
     <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-12">
         <div>

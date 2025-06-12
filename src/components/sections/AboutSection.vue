@@ -73,7 +73,7 @@
         <div class="lg:col-span-5">
           <div class="relative">
             <div class="aspect-square rounded-full overflow-hidden shadow-2xl border-4 border-accent/10">
-              <img src="/images/hendrius_picture.JPG?url" alt="Hendrius Félix" class="w-full h-full object-cover" />
+              <!-- <img src="/images/hendrius_picture.JPG?url" alt="Hendrius Félix" class="w-full h-full object-cover" /> -->
             </div>
 
             <!-- Stats Overlay -->

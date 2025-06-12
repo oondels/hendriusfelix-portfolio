@@ -124,9 +124,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <section id="skills" class="section-container bg-[#111111]">
+  <section id="skills" class="section-container bg-[#111111] mt-5">
     <div class="max-w-6xl mx-auto">
-      <h2 class="section-title">Technical Expertise</h2>
+      <h2 class="text-4xl font-bold text-white mb-4">Conhecimento Técnico</h2>
 
       <!-- Categories Grid -->
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
