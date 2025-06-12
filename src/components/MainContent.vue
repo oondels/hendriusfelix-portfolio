@@ -8,8 +8,8 @@ import Header from "./Header.vue"
 </script>
 
 <template>
+  <Header/>
   <main class="pt-16 bg-[#111111] p-10">
-    <Header/>
     <AboutSection />
     <ProjectsSection />
     <SkillsSection />

@@ -46,12 +46,12 @@ import { Directory } from "./commands/models/FileSystem";
 import { Terminal } from "./commands/models/Terminal";
 import { TerminalService } from "./commands/services/TerminalService";
 import { registry } from "./commands/commands";
+import { useRouter } from "vue-router";
 
 const manager = new FileSystemManager();
 const root = manager.load() as Directory;
 const terminal = new Terminal(root);
 const terminalService = new TerminalService();
-
 
 interface HistoryEntry {
   command: string;
@@ -60,11 +60,13 @@ interface HistoryEntry {
 
 const commandHistory = ref<HistoryEntry[]>([]);
 
+const router = useRouter();
 function handleCommandInput() {
   if (currentCommand.value) {
     if (currentCommand.value === "exit") {
-      emit("exit");
+      commandHistory.value = [];
       currentCommand.value = "";
+      router.push("/");
       return;
     }
     if (currentCommand.value === "clear") {
@@ -74,7 +76,6 @@ function handleCommandInput() {
     }
 
     const response = terminalService.runCommand(currentCommand.value, registry, terminal) as HistoryEntry;
-
     commandHistory.value.push({
       command: response.command,
       output: response.output,
@@ -83,7 +84,9 @@ function handleCommandInput() {
   currentCommand.value = "";
 }
 
-const emit = defineEmits(["exit"]);
+function handleKeydown(event: KeyboardEvent) {
+
+}
 
 const currentCommand = ref("");
 const historyIndex = ref(-1);
@@ -120,7 +123,6 @@ onUnmounted(() => {
   historyBuffer.value = [];
   commandHistory.value = [];
 });
-
 </script>
 
 <style scoped>

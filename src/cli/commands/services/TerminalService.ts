@@ -24,12 +24,6 @@ export class TerminalService {
   }
 
   runCommand(input: string, registry: CommandRegistry, terminal: Terminal) {
-    if (input === 'clear') {
-      this.clearHistory();
-      console.clear()
-      return;
-    }
-
     const [cmd, ...args] = input.trim().split(" ");
     const command = registry.get(cmd);
 
