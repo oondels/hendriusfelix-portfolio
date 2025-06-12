@@ -37,7 +37,7 @@
           </a>
 
           <button
-            @click="$emit('toggle-terminal')"
+            @click="handleTerminalClick"
             class="px-3 py-1 text-sm font-medium bg-accent/5 hover:bg-accent/10 text-accent hover:text-accent-light rounded-lg transition-all duration-200 border border-accent/10"
           >
             <span class="font-mono">&gt;_</span>
@@ -49,11 +49,11 @@
         <div class="flex items-center space-x-4 md:hidden">
           <button
             @click="toggleMobileMenu"
-            class="p-2 rounded-lg bg-accent/5 text-accent hover:text-accent-light focus:outline-none"
+            class="p-2 rounded-lg bg-accent/5 text-accent hover:text-accent-light focus:outline-none transition-all duration-200"
           >
             <svg
               class="w-6 h-6 transition-transform duration-300"
-              :class="{ 'rotate-90': isMobileMenuOpen }"
+              :class="{ 'rotate-45': isMobileMenuOpen }"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -73,44 +73,111 @@
     </div>
 
     <!-- Mobile Menu -->
-    <div v-show="isMobileMenuOpen" class="md:hidden fixed inset-0 z-40" @click="closeMenu">
-      <!-- Backdrop -->
-      <div class="absolute inset-0 bg-background/50 backdrop-blur-sm"></div>
+    <transition
+      enter-active-class="transition-all duration-300 ease-out"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition-all duration-200 ease-in"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <div v-if="isMobileMenuOpen" class="md:hidden fixed inset-0 z-50" @click="closeMenu">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" style="pointer-events: auto;"></div>
 
-      <!-- Menu Content -->
-      <div class="absolute right-0 top-16 w-full max-w-sm bg-black border-l border-accent/10 h-screen" @click.stop>
-        <div class="px-4 py-6 space-y-4">
-          <a
-            v-for="link in links"
-            :key="link.name"
-            :href="link.href"
-            @click.prevent="handleNavClick(link)"
-            class="block px-4 py-3 text-accent hover:text-accent-light hover:bg-accent/5 rounded-lg transition-colors duration-200"
-            :class="{ 'text-accent-light bg-accent/5': currentSection === link.href.substring(1) }"
+        <!-- Menu Content -->
+        <transition
+          enter-active-class="transition-all duration-300 ease-out"
+          enter-from-class="transform translate-x-full"
+          enter-to-class="transform translate-x-0"
+          leave-active-class="transition-all duration-200 ease-in"
+          leave-from-class="transform translate-x-0"
+          leave-to-class="transform translate-x-full"
+        >
+          <div 
+            v-if="isMobileMenuOpen"
+            class="absolute right-0 top-0 w-72 bg-black backdrop-blur-md border-l border-accent/20 shadow-2xl h-screen overflow-y-auto"
+            @click.stop
           >
-            {{ link.name }}
-          </a>
+            <!-- Menu Header -->
+            <div class="px-6 py-4 border-b border-accent/10">
+              <div class="flex items-center justify-between">
+                <span class="text-lg font-semibold text-accent-light">Menu</span>
+                <button
+                  @click="closeMenu"
+                  class="p-1 rounded-lg text-accent hover:text-accent-light hover:bg-accent/10 transition-colors duration-200"
+                >
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
 
-          <button
-            @click="
-              $emit('toggle-terminal');
-              closeMenu();
-            "
-            class="w-full px-4 py-3 text-left text-accent hover:text-accent-light hover:bg-accent/5 rounded-lg transition-colors duration-200"
-          >
-            <span class="font-mono">&gt;_</span>
-            <span class="ml-2">Terminal Mode</span>
-          </button>
-        </div>
+            <!-- Navigation Links -->
+            <div class="px-4 py-6 space-y-2">
+              <a
+                v-for="(link, index) in links"
+                :key="link.name"
+                :href="link.href"
+                @click.prevent="handleNavClick(link)"
+                class="group flex items-center px-4 py-3 text-base font-medium rounded-xl transition-all duration-200 hover:scale-[1.02]"
+                :class="[
+                  currentSection === link.href.substring(1) 
+                    ? 'text-accent-light bg-accent/10 border border-accent/20' 
+                    : 'text-accent hover:text-accent-light hover:bg-accent/5 border border-transparent'
+                ]"
+                :style="{ animationDelay: `${index * 50}ms` }"
+              >
+                <span class="flex-1">{{ link.name }}</span>
+                <svg 
+                  class="w-4 h-4 transform transition-transform duration-200 group-hover:translate-x-1"
+                  :class="currentSection === link.href.substring(1) ? 'translate-x-1' : ''"
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+
+              <!-- Terminal Button -->
+              <div class="pt-4 border-t border-accent/10 mt-6">
+                <button
+                  @click="handleTerminalClick"
+                  class="group w-full flex items-center px-4 py-3 text-base font-medium text-accent hover:text-accent-light hover:bg-accent/5 rounded-xl transition-all duration-200 border border-accent/10 hover:border-accent/20 hover:scale-[1.02]"
+                >
+                  <span class="font-mono text-accent-light">&gt;_</span>
+                  <span class="ml-3 flex-1 text-left">Terminal Mode</span>
+                  <svg 
+                    class="w-4 h-4 transform transition-transform duration-200 group-hover:translate-x-1" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="absolute bottom-0 left-0 right-0 px-6 py-4 border-t border-accent/10 bg-background-secondary">
+              <p class="text-xs text-accent/60 text-center">
+                © 2025 Hendrius Felix
+              </p>
+            </div>
+          </div>
+        </transition>
       </div>
-    </div>
+    </transition>
   </header>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watch,  } from "vue";
 import { useWindowScroll } from "@vueuse/core";
-import ThemeToggle from "./ThemeToggle.vue";
+import { useRouter } from "vue-router";
 
 interface NavLink {
   name: string;
@@ -130,6 +197,12 @@ const links: NavLink[] = [
   { name: "Skills", href: "#skills" },
   { name: "Contato", href: "#contact" },
 ];
+
+const router = useRouter()
+const handleTerminalClick = () => {
+  router.push("/terminal-mode");
+  closeMenu();
+};
 
 const currentSection = ref("");
 
@@ -168,13 +241,42 @@ const handleNavClick = (link: NavLink) => {
   closeMenu();
 };
 
+// Close menu when clicking outside or pressing Escape
+const handleKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape' && isMobileMenuOpen.value) {
+    closeMenu();
+  }
+};
+
+// Prevent body scroll when menu is open (only prevent background scroll, not page scroll)
+watch(isMobileMenuOpen, (isOpen) => {
+  if (isOpen) {
+    // Only prevent scroll on the backdrop, not the entire page
+    document.body.classList.add('menu-open');
+  } else {
+    document.body.classList.remove('menu-open');
+  }
+});
+
 onMounted(() => {
   window.addEventListener("scroll", handleScroll, { passive: true });
+  window.addEventListener("keydown", handleKeydown);
 });
 
 onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
+  window.removeEventListener("keydown", handleKeydown);
+  // Clean up body class
+  document.body.classList.remove('menu-open');
 });
 
 const emit = defineEmits(["toggle-terminal", "toggle-certifications"]);
 </script>
+
+<style scoped>
+/* Menu styles */
+.menu-open {
+  /* Allow normal page scroll */
+  overflow: visible !important;
+}
+</style>
