@@ -3,11 +3,11 @@
     <div class="max-w-6xl mx-auto">
       <!-- Philosophy Section -->
       <div class="mb-16 bg-white/5 rounded-xl p-8 border border-white/10">
-        <h3 class="text-2xl font-bold text-white mb-4">🛠 How I Build</h3>
+        <h3 class="text-2xl font-bold text-white mb-4">🛠 Como eu trabalho?</h3>
         <p class="text-lg text-[#D3D3D3] leading-relaxed">
-          I craft backend-first systems that are scalable, maintainable, and purpose-driven — always focused on solving
-          real problems, not just building features. Every project starts with a clear understanding of the challenge
-          and ends with measurable impact.
+          Eu crio sistemas backend-first que são escaláveis, fáceis de manter e orientados a um propósito — sempre
+          focados em resolver problemas reais, não apenas em desenvolver funcionalidades. Cada projeto começa com uma
+          compreensão clara do desafio e termina com um impacto mensurável.
         </p>
       </div>
 
@@ -117,7 +117,7 @@
                     target="_blank"
                     class="px-6 py-3 bg-white text-black font-medium rounded-lg hover:bg-[#D3D3D3] transition-colors duration-300"
                   >
-                    View Demo
+                    Demonstração
                   </a>
 
                   <a

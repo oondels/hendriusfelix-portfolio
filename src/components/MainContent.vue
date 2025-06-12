@@ -8,7 +8,7 @@ import Header from "./Header.vue"
 </script>
 
 <template>
-  <main class="pt-16 bg-[#111111]">
+  <main class="pt-16 bg-[#111111] p-10">
     <Header/>
     <AboutSection />
     <ProjectsSection />

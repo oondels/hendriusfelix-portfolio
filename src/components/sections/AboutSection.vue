@@ -35,7 +35,7 @@
           <div class="flex flex-wrap items-center gap-4 pt-4">
             <button
               @click="downloadResume"
-              class="px-6 py-3 bg-accent-light text-background font-medium rounded-lg hover:bg-accent transition-colors duration-300 flex items-center gap-2"
+              class="px-6 py-3 bg-background-secondary text-accent-light font-medium rounded-lg border border-accent/10 hover:bg-accent/10 transition-colors duration-300"
             >
               <span>Baixar Currículo</span>
             </button>

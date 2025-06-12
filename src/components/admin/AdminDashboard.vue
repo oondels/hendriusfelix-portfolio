@@ -95,7 +95,7 @@
                 <td class="py-3 px-4 text-admin-text-dim">{{ project.lastUpdated }}</td>
                 <td class="py-3 px-4">
                   <button class="text-admin hover:text-admin-light transition-colors duration-200">
-                    View Details
+                    Ver Detalhes
                   </button>
                 </td>
               </tr>
