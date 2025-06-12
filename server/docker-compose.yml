@@ -1,0 +1,10 @@
+services:
+  hendrius-portfolio:
+    build: .
+    container_name: hendrius-portfolio
+    ports:
+      - "2307:2307"
+    env_file:
+      - .env.production
+    environment:
+      - NODE_ENV=production
