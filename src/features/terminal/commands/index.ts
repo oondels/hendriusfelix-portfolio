@@ -14,6 +14,9 @@ import { lsCommand, cdCommand, pwdCommand, treeCommand } from './navigation';
 // Content commands
 import { catCommand, lessCommand, headCommand, tailCommand } from './content';
 
+// Custom commands
+import { portfolioCommand, projectsCommand, skillsCommand, contactCommand, socialCommand, resumeCommand } from './custom';
+
 // Command registry
 export const commandRegistry: CommandRegistry = {
   // System
@@ -40,6 +43,14 @@ export const commandRegistry: CommandRegistry = {
   less: lessCommand,
   head: headCommand,
   tail: tailCommand,
+  
+  // Custom
+  portfolio: portfolioCommand,
+  projects: projectsCommand,
+  skills: skillsCommand,
+  contact: contactCommand,
+  social: socialCommand,
+  resume: resumeCommand,
 };
 
 // Helper para obter comando
