@@ -210,10 +210,78 @@ export const exitCommand: Command = {
 export const historyCommand: Command = {
   name: 'history',
   description: 'Mostra o histórico de comandos',
-  usage: 'history',
+  usage: 'history [-c] [-s]',
+  examples: [
+    'history',
+    'history -s    # Mostra estatísticas',
+    'history -c    # Limpa o histórico'
+  ],
   execute: (context: CommandContext): CommandResult => {
+    const { args } = context;
     const history = context.state.commandHistory;
     
+    // Flag -c: limpa histórico
+    if (args.includes('-c') || args.includes('--clear')) {
+      context.state.commandHistory = [];
+      try {
+        localStorage.removeItem('terminal-command-history');
+      } catch (e) {
+        // Ignora erros de localStorage
+      }
+      return {
+        output: [
+          `${colors.green}✓${colors.reset} Histórico limpo com sucesso`
+        ],
+        exitCode: 0
+      };
+    }
+    
+    // Flag -s: mostra estatísticas
+    if (args.includes('-s') || args.includes('--stats')) {
+      if (history.length === 0) {
+        return {
+          output: ['Nenhum comando no histórico'],
+          exitCode: 0
+        };
+      }
+
+      // Calcular estatísticas
+      const commandCounts: Record<string, number> = {};
+      history.forEach(cmd => {
+        const baseCommand = cmd.split(' ')[0];
+        commandCounts[baseCommand] = (commandCounts[baseCommand] || 0) + 1;
+      });
+
+      const sortedCommands = Object.entries(commandCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+
+      const output = [
+        '',
+        `${colors.bright}📊 Estatísticas do Histórico${colors.reset}`,
+        separator('═'),
+        '',
+        `${colors.yellow}Total de comandos:${colors.reset} ${history.length}`,
+        `${colors.yellow}Comandos únicos:${colors.reset} ${Object.keys(commandCounts).length}`,
+        '',
+        `${colors.cyan}Top 10 Comandos Mais Usados:${colors.reset}`,
+        separator('─'),
+        '',
+        ...sortedCommands.map(([cmd, count], index) => {
+          const bar = '█'.repeat(Math.ceil((count / sortedCommands[0][1]) * 20));
+          const icon = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '  ';
+          return `${icon} ${colors.green}${cmd.padEnd(15)}${colors.reset} ${colors.dim}${bar}${colors.reset} ${colors.bright}${count}${colors.reset}`;
+        }),
+        ''
+      ];
+
+      return {
+        output,
+        exitCode: 0
+      };
+    }
+    
+    // Padrão: mostra histórico
     if (history.length === 0) {
       return {
         output: ['Nenhum comando no histórico'],
@@ -225,7 +293,13 @@ export const historyCommand: Command = {
       `${colors.bright}Histórico de Comandos${colors.reset}`,
       separator('─'),
       '',
-      ...history.map((cmd, index) => `  ${colors.dim}${index + 1}${colors.reset}  ${cmd}`),
+      ...history.slice(-50).map((cmd, index) => {
+        const lineNum = (history.length - 50 + index + 1).toString().padStart(4);
+        return `  ${colors.dim}${lineNum}${colors.reset}  ${cmd}`;
+      }),
+      '',
+      `${colors.dim}Mostrando últimos 50 comandos${colors.reset}`,
+      `${colors.dim}Use ${colors.bright}history -s${colors.reset}${colors.dim} para ver estatísticas${colors.reset}`,
       ''
     ];
 

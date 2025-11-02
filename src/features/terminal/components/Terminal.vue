@@ -4,7 +4,7 @@
       <div v-for="(entry, index) in history" :key="index">
         <!-- Command -->
         <div v-if="entry.command" class="flex">
-          <span class="text-[#89B4FA] mr-2">{{ entry.prompt || prompt }}</span>
+          <span class="text-[#89B4FA] mr-2">{{ prompt }}</span>
           <span>{{ entry.command }}</span>
         </div>
 
@@ -33,9 +33,19 @@
     </div>
 
     <!-- Tab suggestions -->
-    <div v-if="showSuggestions && suggestions.length > 0" class="mt-2 ml-4 text-[#BAC2DE]">
-      <div v-for="(suggestion, index) in suggestions" :key="index" class="hover:text-[#89B4FA]">
-        {{ suggestion }}
+    <div v-if="showSuggestions && suggestions.length > 0" class="mt-2 p-2 bg-[#181825] rounded border border-[#45475a]">
+      <div class="text-[#BAC2DE] text-sm mb-1">Sugestões disponíveis:</div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+        <div 
+          v-for="(suggestion, index) in suggestions" 
+          :key="index" 
+          class="text-[#89B4FA] hover:bg-[#313244] px-2 py-1 rounded cursor-pointer transition-colors"
+        >
+          {{ suggestion }}
+        </div>
+      </div>
+      <div class="text-[#6C7086] text-xs mt-2">
+        💡 Pressione Tab novamente para ver mais opções ou continue digitando
       </div>
     </div>
   </div>
@@ -45,16 +55,24 @@
 import { ref, computed, onMounted, onUnmounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { useTerminalState } from "@/features/terminal/composables/useTerminalState";
+import { useAutoComplete } from "@/features/terminal/composables/useAutoComplete";
+import { useCommandHistory } from "@/features/terminal/composables/useCommandHistory";
 import { CommandExecutor } from "@/features/terminal/commands/executor";
 import { getFileContent } from "@/features/terminal/filesystem/content";
 import type { HistoryEntry } from "@/features/terminal/types/terminal.types";
 
 const router = useRouter();
 const { state, prompt: statePrompt, addToHistory } = useTerminalState();
+const { autoComplete, getContextualSuggestions } = useAutoComplete();
+const { 
+  addCommand, 
+  navigatePrevious, 
+  navigateNext, 
+  resetNavigation 
+} = useCommandHistory();
 
 const history = ref<HistoryEntry[]>([]);
 const currentCommand = ref("");
-const commandHistoryIndex = ref(-1);
 const suggestions = ref<string[]>([]);
 const showSuggestions = ref(false);
 
@@ -97,6 +115,9 @@ async function handleCommandInput() {
     return;
   }
 
+  // Adiciona ao histórico de comandos
+  addCommand(input);
+
   // Execute command
   const result = await CommandExecutor.execute(input);
   
@@ -116,7 +137,6 @@ async function handleCommandInput() {
   const entry: HistoryEntry = {
     command: input,
     output: result.output,
-    prompt: prompt.value,
     timestamp: Date.now(),
     exitCode: result.exitCode
   };
@@ -125,7 +145,7 @@ async function handleCommandInput() {
   addToHistory(entry);
   
   currentCommand.value = "";
-  commandHistoryIndex.value = -1;
+  resetNavigation();
   
   // Scroll to bottom
   await nextTick();
@@ -138,48 +158,49 @@ function handleKeydown(event: KeyboardEvent) {
   // Arrow Up - previous command
   if (event.key === 'ArrowUp') {
     event.preventDefault();
-    const cmdHistory = state.value.commandHistory;
-    if (cmdHistory.length > 0) {
-      if (commandHistoryIndex.value === -1) {
-        commandHistoryIndex.value = cmdHistory.length - 1;
-      } else if (commandHistoryIndex.value > 0) {
-        commandHistoryIndex.value--;
-      }
-      currentCommand.value = cmdHistory[commandHistoryIndex.value];
-    }
+    currentCommand.value = navigatePrevious(currentCommand.value);
+    return;
   }
   
   // Arrow Down - next command
   if (event.key === 'ArrowDown') {
     event.preventDefault();
-    const cmdHistory = state.value.commandHistory;
-    if (commandHistoryIndex.value !== -1) {
-      if (commandHistoryIndex.value < cmdHistory.length - 1) {
-        commandHistoryIndex.value++;
-        currentCommand.value = cmdHistory[commandHistoryIndex.value];
-      } else {
-        commandHistoryIndex.value = -1;
-        currentCommand.value = "";
-      }
-    }
+    currentCommand.value = navigateNext(currentCommand.value);
+    return;
   }
   
   // Tab - autocomplete
   if (event.key === 'Tab') {
     event.preventDefault();
-    const partial = currentCommand.value;
-    const cmdSuggestions = CommandExecutor.getSuggestions(partial);
     
-    if (cmdSuggestions.length === 1) {
-      currentCommand.value = cmdSuggestions[0] + ' ';
+    const result = autoComplete(currentCommand.value);
+    
+    if (result.hasMultipleSuggestions) {
+      // Mostra sugestões
+      suggestions.value = result.suggestions;
+      showSuggestions.value = true;
+      // Completa até o prefixo comum
+      currentCommand.value = result.completed;
+    } else if (result.completed !== currentCommand.value) {
+      // Completou - esconde sugestões
+      currentCommand.value = result.completed;
       suggestions.value = [];
       showSuggestions.value = false;
-    } else if (cmdSuggestions.length > 1) {
-      suggestions.value = cmdSuggestions;
-      showSuggestions.value = true;
+    } else {
+      // Nenhuma sugestão - mostra opções contextuais
+      const contextual = getContextualSuggestions(currentCommand.value);
+      if (contextual.length > 0) {
+        suggestions.value = contextual;
+        showSuggestions.value = true;
+      }
     }
-  } else {
+    return;
+  }
+  
+  // Qualquer outra tecla - esconde sugestões
+  if (event.key !== 'Tab') {
     showSuggestions.value = false;
+    suggestions.value = [];
   }
 }
 
