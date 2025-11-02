@@ -6,7 +6,7 @@ import ProjectsManager from '../components/admin/ProjectsManager.vue';
 import CertificationsManager from '../components/admin/CertificationsManager.vue';
 import ProfileManager from '../components/admin/ProfileManager.vue';
 import MainContent from '../components/MainContent.vue'
-import TerminalShell from '../cli/TerminalShell.vue';
+import Terminal from '../features/terminal/components/Terminal.vue';
 
 const routes = [
   {
@@ -37,7 +37,7 @@ const routes = [
   },
   {
     path: '/terminal-mode',
-    component: TerminalShell,
+    component: Terminal,
     meta: {
       title: 'Terminal Mode'
     }
