@@ -11,23 +11,23 @@
         </p>
       </div>
 
-      <!-- Category Tabs -->
-      <div class="flex space-x-4 mb-12">
-        <button
-          v-for="category in categories"
-          :key="category.id"
-          @click="activeCategory = category.id as 'IoT' | 'Backend' | 'WebApp'"
-          :class="[
-            'px-6 py-3 rounded-lg font-medium transition-all duration-300',
-            activeCategory === category.id ? 'bg-white text-black' : 'bg-white/5 text-[#D3D3D3] hover:bg-white/10',
-          ]"
-        >
-          {{ category.name }}
-        </button>
-      </div>
-
       <!-- Projects Grid -->
-      <div class="grid md:grid-cols-2 gap-8">
+      <div v-if="Object.keys(filteredProjects).length" class="grid md:grid-cols-2 gap-8">
+        <!-- Category Tabs -->
+        <div class="flex space-x-4 mb-12">
+          <button
+            v-for="category in categories"
+            :key="category.id"
+            @click="activeCategory = category.id as 'IoT' | 'Backend' | 'WebApp'"
+            :class="[
+              'px-6 py-3 rounded-lg font-medium transition-all duration-300',
+              activeCategory === category.id ? 'bg-white text-black' : 'bg-white/5 text-[#D3D3D3] hover:bg-white/10',
+            ]"
+          >
+            {{ category.name }}
+          </button>
+        </div>
+
         <div
           v-for="project in filteredProjects"
           :key="project.id"

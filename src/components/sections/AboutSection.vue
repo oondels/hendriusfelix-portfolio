@@ -6,7 +6,7 @@
         <div class="lg:col-span-7 space-y-8">
           <div class="space-y-4">
             <h1 class="text-4xl lg:text-5xl font-bold text-accent-light tracking-tight">Hendrius Félix</h1>
-            <p class="text-xl text-accent font-light">Desenvolvedor Full-Stack | Especialista em Backend & IoT</p>
+            <p class="text-xl text-accent font-light">Engenheiro de Software</p>
           </div>
 
           <div class="prose prose-invert max-w-none space-y-4">
@@ -138,12 +138,12 @@ const socialLinks = [
   },
   {
     name: "GitHub",
-    url: "https://github.com/hendrius",
+    url: "https://github.com/oondels",
     icon: "M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z",
   },
   {
     name: "Email",
-    url: "mailto:hendrius@email.com",
+    url: "mailto:hendriusfelix.dev@gmail.com",
     icon: "M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z",
   },
 ];
