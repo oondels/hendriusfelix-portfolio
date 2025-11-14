@@ -6,8 +6,14 @@ import path from 'path'
 export default defineConfig({
   plugins: [vue()],
   resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
+
       '@': path.resolve(__dirname, './src')
     }
-  }
+  },
+  build: {
+    target: 'esnext',
+    outDir: 'dist',
+  },
 })
