@@ -18,7 +18,7 @@
     </div>
 
     <!-- Recent Activity -->
-    <div class="bg-admin-card rounded-lg border border-admin-border">
+    <!-- <div class="bg-admin-card rounded-lg border border-admin-border">
       <div class="p-6">
         <h2 class="text-xl text-admin font-mono mb-4">Recent Activity</h2>
         <div class="space-y-4">
@@ -35,7 +35,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Quick Actions -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

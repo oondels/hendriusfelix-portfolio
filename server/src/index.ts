@@ -2,9 +2,10 @@ import express, { Request, Response, NextFunction } from "express"
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { projectsRouter } from "./routes/projects.route";
+import { vars } from "./config/dotenv";
 
 const app = express()
-const port = 2307
+const port = vars.PORT || 2307
 
 app.use(cors({ origin: "*" }))
 app.use(cookieParser())

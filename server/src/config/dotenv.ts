@@ -13,3 +13,5 @@ export const vars = {
   UPLOAD_FOLDER: process.env.UPLOAD_FOLDER || path.join(__dirname, "../../", "uploads"),
   ALLOWED_FILE_TYPES: process.env.ALLOWED_FILE_TYPES,
 };
+
+console.log(vars);
