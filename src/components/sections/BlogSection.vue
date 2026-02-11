@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 
+type ArticleCategory = 'technical' | 'reflection' | 'case-study';
+type FilterCategory = 'all' | ArticleCategory;
+
 interface Article {
   id: string;
   title: string;
@@ -8,15 +11,15 @@ interface Article {
   summary: string;
   summaryPt: string;
   date: string;
-  category: 'technical' | 'reflection' | 'case-study';
+  category: ArticleCategory;
   tags: string[];
   readTime: number;
   image: string;
   url: string;
 }
 
-const activeCategory = ref<'all' | 'technical' | 'reflection' | 'case-study'>('all');
-const currentLanguage = ref<'en' | 'pt'>('en');
+const activeCategory = ref<FilterCategory>('all');
+const currentLanguage = ref<'en' | 'pt'>('pt');
 
 const articles: Article[] = [
   {
@@ -60,7 +63,7 @@ const articles: Article[] = [
   }
 ];
 
-const categories = [
+const categories: { id: FilterCategory; label: string; labelPt: string }[] = [
   { id: 'all', label: 'All Articles', labelPt: 'Todos os Artigos' },
   { id: 'technical', label: 'Technical Guides', labelPt: 'Guias Técnicos' },
   { id: 'reflection', label: 'Reflections', labelPt: 'Reflexões' },
@@ -110,7 +113,7 @@ const formatDate = (dateString: string) => {
         <button
           v-for="category in categories"
           :key="category.id"
-          @click="activeCategory = category.id as typeof activeCategory.value"
+          @click="activeCategory = category.id"
           class="px-6 py-3 rounded-lg font-medium whitespace-nowrap transition-all duration-300"
           :class="[
             activeCategory === category.id

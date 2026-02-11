@@ -11,7 +11,7 @@
         <!-- Logo -->
         <div class="flex items-center">
           <a href="#" class="flex items-center space-x-2">
-            <span class="text-2xl font-bold bg-gradient-to-r from-accent-light to-accent bg-clip-text text-transparent">
+            <span class="text-2xl font-bold bg-gradient-to-r from-accent-light to-accent bg-clip-text">
               HF
             </span>
           </a>

@@ -6,7 +6,7 @@ import { projectsRouter } from "./routes/projects.route";
 const app = express()
 const port = 2307
 
-app.use(cors())
+app.use(cors({ origin: "*" }))
 app.use(cookieParser())
 app.use(express.json())
 app.use("/api/projects", projectsRouter)

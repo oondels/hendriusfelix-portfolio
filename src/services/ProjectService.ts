@@ -1,15 +1,23 @@
 import { Project } from '../types/index';
 import { ip } from '../config/ip';
+import { MOCK_PROJECTS } from '../data/mockProjects';
 import axios from "axios"
 
 class ProjectService {
   async getProjects(): Promise<Project[]> {
     try {
       const response = await axios.get(`${ip}/api/projects`)
-      return response.data;
+      const data = response.data;
+
+      if (response.status === 200 && Array.isArray(data) && data.length > 0) {
+        return data;
+      }
+
+      console.warn("API indisponível ou vazia. Servindo dados de Mock.");
+      return MOCK_PROJECTS;
     } catch (error) {
-      console.error("Error fetching projects:", error);
-      throw new Error("Failed to fetch projects");
+      console.warn("API indisponível ou vazia. Servindo dados de Mock.");
+      return MOCK_PROJECTS;
     }
   }
 

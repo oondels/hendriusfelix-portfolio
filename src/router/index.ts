@@ -33,7 +33,8 @@ const routes = [
         component: ProfileManager,
         name: 'profile-manager'
       }
-    ]
+    ],
+    requiresAuth: true
   },
   {
     path: '/terminal-mode',
@@ -62,5 +63,15 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 });
+
+router.beforeEach(async (to, from, next) => {
+  if(to.meta.requiresAuth) {
+    console.log('precisa de login');
+    
+  }
+  next()
+})
+
+
 
 export default router;
