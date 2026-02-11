@@ -13,8 +13,9 @@ export interface Project {
   };
   images: string[];
   github_url: string;
-  demo_url?: string;
-  status?: 'complete' | 'in-progress' | 'refactoring';
-  createdAt: string;
-  updatedAt: string;
+  demo_url: string | null;
+  // TODO: Ensure DB constraints match these values
+  status?: 'complete' | 'in-progress' | 'refactoring' | string;
+  created_at: string;
+  updated_at: string;
 }

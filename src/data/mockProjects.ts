@@ -21,8 +21,8 @@ export const MOCK_PROJECTS: Project[] = [
     github_url: 'https://github.com/hendrius/jarvix',
     demo_url: 'https://jarvix.demo.dev',
     status: 'complete',
-    createdAt: now,
-    updatedAt: now
+    created_at: now,
+    updated_at: now
   },
   {
     id: 2,
@@ -40,9 +40,10 @@ export const MOCK_PROJECTS: Project[] = [
     },
     images: ['https://placehold.co/600x400'],
     github_url: 'https://github.com/hendrius/smartgrid',
+    demo_url: null,
     status: 'in-progress',
-    createdAt: now,
-    updatedAt: now
+    created_at: now,
+    updated_at: now
   },
   {
     id: 3,
@@ -62,7 +63,7 @@ export const MOCK_PROJECTS: Project[] = [
     github_url: 'https://github.com/hendrius/factory-automation',
     demo_url: 'https://factory.demo.dev',
     status: 'complete',
-    createdAt: now,
-    updatedAt: now
+    created_at: now,
+    updated_at: now
   }
 ];
