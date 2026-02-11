@@ -10,6 +10,7 @@ export const vars = {
   USERS: process.env.USERS,
   DBASE: process.env.DBASE,
   JWT_SECRET: process.env.JWT_SECRET,
+  ADMIN_TOKEN: process.env.ADMIN_TOKEN || "dev-admin-token",
   UPLOAD_FOLDER: process.env.UPLOAD_FOLDER || path.join(__dirname, "../../", "uploads"),
   ALLOWED_FILE_TYPES: process.env.ALLOWED_FILE_TYPES,
 };

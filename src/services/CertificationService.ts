@@ -1,5 +1,4 @@
-import { ip } from '../config/ip';
-import axios from "axios"
+import { api } from '../config/api';
 
 export interface Certification {
   id?: number;
@@ -13,7 +12,7 @@ export interface Certification {
 class CertificationService {
   async getCertifications(): Promise<Certification[]> {
     try {
-      const response = await axios.get(`${ip}/api/certifications`)
+      const response = await api.get(`/api/certifications`)
       const data = response.data;
 
       if (response.status === 200 && Array.isArray(data)) {
@@ -30,7 +29,7 @@ class CertificationService {
 
   async createCertification(certificationData: Certification): Promise<Certification> {
     try {
-      const response = await axios.post(`${ip}/api/certifications`, certificationData)
+      const response = await api.post(`/api/certifications`, certificationData)
       return response.data;
     } catch (error) {
       console.error("Error creating certification:", error);
@@ -43,8 +42,8 @@ class CertificationService {
     certificationData: Certification,
   ): Promise<Certification> {
     try {
-      const response = await axios.put(
-        `${ip}/api/certifications/${certificationId}`,
+      const response = await api.put(
+        `/api/certifications/${certificationId}`,
         certificationData,
       )
       return response.data;
@@ -56,7 +55,7 @@ class CertificationService {
 
   async deleteCertification(certificationId: number): Promise<void> {
     try {
-      await axios.delete(`${ip}/api/certifications/${certificationId}`)
+      await api.delete(`/api/certifications/${certificationId}`)
     } catch (error) {
       console.error("Error deleting certification:", error);
       throw new Error("Failed to delete certification");

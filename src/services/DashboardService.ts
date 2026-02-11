@@ -1,5 +1,4 @@
-import { ip } from '../config/ip';
-import axios from "axios"
+import { api } from '../config/api';
 
 export interface DashboardStats {
   projects: number;
@@ -10,7 +9,7 @@ export interface DashboardStats {
 class DashboardService {
   async getStats(): Promise<DashboardStats> {
     try {
-      const response = await axios.get(`${ip}/api/dashboard`)
+      const response = await api.get(`/api/dashboard`)
       const data = response.data;
 
       if (response.status === 200 && data?.stats) {

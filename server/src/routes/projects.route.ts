@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction, Router } from "express"
 import { pool } from "../config/db"
+import { authMiddleware } from "../middlewares/auth.middleware"
 
 export const projectsRouter: Router = express.Router()
 
@@ -33,6 +34,7 @@ projectsRouter.get("/:id", async (req: Request, res: Response, next: NextFunctio
 
 projectsRouter.post(
   "/",
+  authMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const {
@@ -112,6 +114,7 @@ projectsRouter.post(
 
 projectsRouter.put(
   "/:id",
+  authMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const projectId = Number(req.params.id);
@@ -197,6 +200,7 @@ projectsRouter.put(
 
 projectsRouter.delete(
   "/:id",
+  authMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const projectId = Number(req.params.id);

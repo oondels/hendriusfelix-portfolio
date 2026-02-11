@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-// import AdminLogin from '../components/admin/AdminLogin.vue';
+import AdminLogin from '../components/admin/AdminLogin.vue';
 import AdminLayout from '../components/admin/AdminLayout.vue';
 import AdminDashboard from '../components/admin/AdminDashboard.vue';
 import ProjectsManager from '../components/admin/ProjectsManager.vue';
@@ -10,8 +10,18 @@ import Terminal from '../features/terminal/components/Terminal.vue';
 
 const routes = [
   {
+    path: '/login',
+    component: AdminLogin,
+    meta: {
+      title: 'Admin Login'
+    }
+  },
+  {
     path: '/admin',
     component: AdminLayout,
+    meta: {
+      requiresAuth: true
+    },
     children: [
       {
         path: '',
@@ -33,8 +43,7 @@ const routes = [
         component: ProfileManager,
         name: 'profile-manager'
       }
-    ],
-    requiresAuth: true
+    ]
   },
   {
     path: '/terminal-mode',
@@ -65,11 +74,20 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  if(to.meta.requiresAuth) {
-    console.log('precisa de login');
-    
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const hasToken = typeof window !== 'undefined' && !!localStorage.getItem('admin_token');
+
+  if (requiresAuth && !hasToken) {
+    next({ path: '/login' });
+    return;
   }
-  next()
+
+  if (to.path === '/login' && hasToken) {
+    next({ path: '/admin' });
+    return;
+  }
+
+  next();
 })
 
 

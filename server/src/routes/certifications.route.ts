@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction, Router } from "express"
 import { pool } from "../config/db"
+import { authMiddleware } from "../middlewares/auth.middleware"
 
 export const certificationsRouter: Router = express.Router()
 
@@ -36,6 +37,7 @@ certificationsRouter.get("/:id", async (req: Request, res: Response, next: NextF
 
 certificationsRouter.post(
   "/",
+  authMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const {
@@ -82,6 +84,7 @@ certificationsRouter.post(
 
 certificationsRouter.put(
   "/:id",
+  authMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const certificationId = Number(req.params.id);
@@ -153,6 +156,7 @@ certificationsRouter.put(
 
 certificationsRouter.delete(
   "/:id",
+  authMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const certificationId = Number(req.params.id);
