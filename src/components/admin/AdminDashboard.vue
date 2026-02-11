@@ -108,46 +108,40 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import {
   DocumentPlusIcon,
   AcademicCapIcon,
   UserIcon,
   FolderIcon,
-  PencilIcon,
-  TrashIcon,
   PlusIcon,
   CodeBracketIcon,
   BeakerIcon,
   CubeIcon
 } from '@heroicons/vue/24/outline';
+import { dashboardService } from '../../services/DashboardService';
+import { projectService } from '../../services/ProjectService';
+import type { Project } from '../../types/index';
 
 const router = useRouter();
 
-const stats = [
-  { name: 'Total Projects', value: '12', icon: FolderIcon },
-  { name: 'Certifications', value: '8', icon: AcademicCapIcon },
-  { name: 'Blog Posts', value: '24', icon: DocumentPlusIcon },
-  { name: 'Profile Views', value: '2.4k', icon: UserIcon }
-];
+type StatCard = { name: string; value: string; icon: any };
+type RecentProject = {
+  id: number;
+  name: string;
+  description: string;
+  status: string;
+  lastUpdated: string;
+  icon: any;
+};
 
-const recentActivity = [
-  {
-    icon: PlusIcon,
-    description: 'Added new project: SmartGrid Monitor',
-    timestamp: '2 hours ago'
-  },
-  {
-    icon: PencilIcon,
-    description: 'Updated certification details',
-    timestamp: '5 hours ago'
-  },
-  {
-    icon: TrashIcon,
-    description: 'Removed outdated project',
-    timestamp: '1 day ago'
-  }
-];
+const stats = ref<StatCard[]>([
+  { name: 'Total Projects', value: '0', icon: FolderIcon },
+  { name: 'Certifications', value: '0', icon: AcademicCapIcon },
+  { name: 'Blog Posts', value: '0', icon: DocumentPlusIcon },
+  // { name: 'Profile Views', value: '2.4k', icon: UserIcon }
+]);
 
 const quickActions = [
   {
@@ -164,30 +158,44 @@ const quickActions = [
   }
 ];
 
-const recentProjects = [
-  {
-    id: 1,
-    name: 'SmartGrid Monitor',
-    description: 'IoT-based power grid monitoring',
-    status: 'Active',
-    lastUpdated: '1 hour ago',
-    icon: BeakerIcon
-  },
-  {
-    id: 2,
-    name: 'Factory Automation',
-    description: 'Industrial automation system',
-    status: 'In Progress',
-    lastUpdated: '3 hours ago',
-    icon: CubeIcon
-  },
-  {
-    id: 3,
-    name: 'API Gateway',
-    description: 'Microservices integration',
-    status: 'Planning',
-    lastUpdated: '1 day ago',
-    icon: CodeBracketIcon
-  }
-];
+const recentProjects = ref<RecentProject[]>([]);
+
+const categoryToIcon = (category?: string) => {
+  if (category === 'IoT') return BeakerIcon;
+  if (category === 'Backend') return CodeBracketIcon;
+  if (category === 'WebApp') return CubeIcon;
+  return FolderIcon;
+};
+
+const formatDate = (value?: string) => {
+  if (!value) return '—';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '—';
+  return date.toLocaleDateString('pt-BR');
+};
+
+const mapProjectToRecent = (project: Project): RecentProject => {
+  return {
+    id: project.id,
+    name: project.name,
+    description: project.summary || project.description || '',
+    status: project.status || project.category || 'Active',
+    lastUpdated: formatDate(project.updated_at || project.created_at),
+    icon: categoryToIcon(project.category)
+  };
+};
+
+onMounted(async () => {
+  const statsData = await dashboardService.getStats();
+  stats.value = [
+    { name: 'Total Projects', value: String(statsData.projects), icon: FolderIcon },
+    { name: 'Certifications', value: String(statsData.certifications), icon: AcademicCapIcon },
+    { name: 'Blog Posts', value: String(statsData.blogs), icon: DocumentPlusIcon },
+    // { name: 'Profile Views', value: '2.4k', icon: UserIcon }
+  ];
+
+  const projects = await projectService.getProjects();
+  const sortedProjects = [...projects].reverse();
+  recentProjects.value = sortedProjects.slice(0, 5).map(mapProjectToRecent);
+});
 </script>

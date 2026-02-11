@@ -11,23 +11,22 @@
         </p>
       </div>
 
-      <!-- Projects Grid -->
-      <div v-if="Object.keys(filteredProjects).length" class="grid md:grid-cols-2 gap-8">
-        <!-- Category Tabs -->
-        <div class="flex space-x-4 mb-12">
-          <button
-            v-for="category in categories"
-            :key="category.id"
-            @click="activeCategory = category.id as 'IoT' | 'Backend' | 'WebApp'"
-            :class="[
-              'px-6 py-3 rounded-lg font-medium transition-all duration-300',
-              activeCategory === category.id ? 'bg-white text-black' : 'bg-white/5 text-[#D3D3D3] hover:bg-white/10',
-            ]"
-          >
-            {{ category.name }}
-          </button>
-        </div>
+      <!-- Category Tabs -->
+      <div class="flex space-x-4 mb-12">
+        <button
+          v-for="category in categories"
+          :key="category.id"
+          @click="activeCategory = category.id as 'IoT' | 'Backend' | 'WebApp'"
+          :class="[
+            'px-6 py-3 rounded-lg font-medium transition-all duration-300',
+            activeCategory === category.id ? 'bg-white text-black' : 'bg-white/5 text-[#D3D3D3] hover:bg-white/10',
+          ]"
+        >
+          {{ category.name }}
+        </button>
+      </div>
 
+      <div v-if="filteredProjects.length" class="grid md:grid-cols-2 gap-8">
         <div
           v-for="project in filteredProjects"
           :key="project.id"
@@ -35,7 +34,13 @@
           :class="{ 'md:col-span-2': activeProjectId === project.id }"
         >
           <div class="relative overflow-hidden rounded-xl shadow-lg">
-            <img :src="project.images[0]" :alt="project.name" class="w-full h-64 object-cover" />
+            <img
+              v-if="project.images && project.images.length"
+              :src="project.images[0]"
+              :alt="project.name"
+              class="w-full h-64 object-cover"
+            />
+            <div v-else class="w-full h-64 bg-gradient-to-br from-white/10 via-white/5 to-transparent" />
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
 
             <span
@@ -134,20 +139,32 @@
           </div>
         </div>
       </div>
+      <div v-else class="bg-white/5 rounded-xl p-8 border border-white/10">
+        <p class="text-[#D3D3D3]">
+          Em breve. Novos projetos serão adicionados aqui.
+        </p>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { projectService } from "../../services/ProjectService";
-import { Project } from "../../types";
+import { Project } from "../../types/index";
 
 const projects = ref<Project[]>([]);
 const getProjects = async () => {
-  projects.value = await projectService.getProjects();
+  try {
+    projects.value = await projectService.getProjects();
+  } catch (error) {
+    projects.value = [];
+  }
 };
-getProjects();
+
+onMounted(() => {
+  getProjects();
+});
 
 const categorizeProjectStatus = (status: string) => {
   switch (status) {

@@ -14,35 +14,31 @@
     <div class="grid gap-6">
       <div
         v-for="cert in certifications"
-        :key="cert.title"
+        :key="cert.id ?? cert.name"
         class="bg-admin-card p-6 rounded-lg border border-admin-border"
       >
         <div class="flex justify-between items-start">
           <div class="flex-1">
-            <div class="flex items-center gap-4 mb-4">
-              <img
-                :src="cert.logo"
-                :alt="cert.institution"
-                class="w-12 h-12 object-cover rounded"
-              />
-              <div>
-                <h3 class="text-xl font-semibold text-admin-accent-light">
-                  {{ cert.title }}
-                </h3>
-                <p class="text-admin-text">{{ cert.institution }}</p>
-              </div>
+            <div class="mb-4">
+              <h3 class="text-xl font-semibold text-admin-accent-light">
+                {{ cert.name }}
+              </h3>
+              <p class="text-admin-text">{{ cert.issuing_organization }}</p>
             </div>
-            
-            <p class="text-admin-text mb-4">{{ cert.description }}</p>
-            
-            <div class="flex flex-wrap gap-2">
-              <span
-                v-for="skill in cert.skills"
-                :key="skill"
-                class="px-3 py-1 text-sm bg-admin-accent/5 rounded-full text-admin-accent-light border border-admin-border"
-              >
-                {{ skill }}
-              </span>
+
+            <div class="text-sm text-admin-text-dim space-y-1">
+              <p>Emissão: {{ formatDate(cert.issue_date) }}</p>
+              <p>
+                Credencial:
+                <a
+                  :href="cert.credential_url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-admin-accent hover:text-admin-accent-light transition-colors duration-200"
+                >
+                  {{ cert.credential_url }}
+                </a>
+              </p>
             </div>
           </div>
           
@@ -54,7 +50,7 @@
               <PencilIcon class="w-5 h-5" />
             </button>
             <button
-              @click="deleteCertification(cert.title)"
+              @click="deleteCertification(cert.id)"
               class="p-2 text-red-500 hover:text-red-400 transition-colors duration-200"
             >
               <TrashIcon class="w-5 h-5" />
@@ -98,9 +94,9 @@
 
                   <form @submit.prevent="saveCertification" class="space-y-4">
                     <div>
-                      <label class="block text-sm font-medium text-admin-text mb-1">Title</label>
+                      <label class="block text-sm font-medium text-admin-text mb-1">Name</label>
                       <input
-                        v-model="certForm.title"
+                        v-model="certForm.name"
                         type="text"
                         class="admin-input"
                         required
@@ -108,9 +104,9 @@
                     </div>
 
                     <div>
-                      <label class="block text-sm font-medium text-admin-text mb-1">Institution</label>
+                      <label class="block text-sm font-medium text-admin-text mb-1">Issuing Organization</label>
                       <input
-                        v-model="certForm.institution"
+                        v-model="certForm.issuing_organization"
                         type="text"
                         class="admin-input"
                         required
@@ -118,71 +114,23 @@
                     </div>
 
                     <div>
-                      <label class="block text-sm font-medium text-admin-text mb-1">Year</label>
+                      <label class="block text-sm font-medium text-admin-text mb-1">Issue Date</label>
                       <input
-                        v-model="certForm.year"
-                        type="text"
+                        v-model="certForm.issue_date"
+                        type="date"
                         class="admin-input"
                         required
                       />
                     </div>
 
                     <div>
-                      <label class="block text-sm font-medium text-admin-text mb-1">Description</label>
-                      <textarea
-                        v-model="certForm.description"
-                        rows="3"
-                        class="admin-input"
-                        required
-                      ></textarea>
-                    </div>
-
-                    <div>
-                      <label class="block text-sm font-medium text-admin-text mb-1">Impact</label>
-                      <textarea
-                        v-model="certForm.impact"
-                        rows="2"
-                        class="admin-input"
-                        required
-                      ></textarea>
-                    </div>
-
-                    <div>
-                      <label class="block text-sm font-medium text-admin-text mb-1">Logo URL</label>
+                      <label class="block text-sm font-medium text-admin-text mb-1">Link da Credencial</label>
                       <input
-                        v-model="certForm.logo"
+                        v-model="certForm.credential_url"
                         type="url"
                         class="admin-input"
                         required
                       />
-                    </div>
-
-                    <div>
-                      <label class="block text-sm font-medium text-admin-text mb-1">Skills</label>
-                      <div class="flex items-center gap-2">
-                        <input
-                          v-model="skillInput"
-                          @keydown.enter.prevent="addSkill"
-                          type="text"
-                          placeholder="Press Enter to add"
-                          class="admin-input"
-                        />
-                      </div>
-                      <div class="flex flex-wrap gap-2 mt-2">
-                        <span
-                          v-for="skill in certForm.skills"
-                          :key="skill"
-                          class="px-3 py-1 text-sm bg-admin-accent/5 rounded-full text-admin-accent-light border border-admin-border flex items-center"
-                        >
-                          {{ skill }}
-                          <button
-                            @click="removeSkill(skill)"
-                            class="ml-2 text-admin-accent hover:text-admin-accent-light"
-                          >
-                            ×
-                          </button>
-                        </span>
-                      </div>
                     </div>
 
                     <div class="flex justify-end gap-4 mt-6">
@@ -212,50 +160,36 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { onMounted, ref, reactive } from 'vue';
 import { Dialog, DialogPanel, DialogTitle, TransitionRoot, TransitionChild } from '@headlessui/vue';
 import { PencilIcon, TrashIcon } from '@heroicons/vue/24/outline';
+import { certificationService } from '../../services/CertificationService';
+import type { Certification } from '../../services/CertificationService';
+import { useToast } from "vue-toastification";
 
-interface Certification {
-  title: string;
-  institution: string;
-  year: string;
-  status?: string;
-  logo: string;
-  description: string;
-  impact: string;
-  skills: string[];
-  projects?: string[];
-}
-
-const certifications = ref<Certification[]>([
-  {
-    title: 'MBA in Software Engineering',
-    institution: 'PUC-Rio',
-    year: '2025',
-    status: 'In progress',
-    logo: 'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg',
-    description: 'Advanced study in software architecture, distributed systems, and enterprise application development.',
-    impact: 'Applied learning directly to industrial automation projects, improving system reliability by 40%.',
-    skills: ['System Architecture', 'Enterprise Patterns', 'Technical Leadership'],
-    projects: ['Factory Automation Suite', 'SmartGrid Monitor']
-  }
-]);
+const toast = useToast();
+const certifications = ref<Certification[]>([]);
 
 const showModal = ref(false);
-const editingCert = ref<string | null>(null);
-const skillInput = ref('');
+const editingCert = ref<number | null>(null);
 
 const certForm = reactive({
-  title: '',
-  institution: '',
-  year: '',
-  status: '',
-  logo: '',
-  description: '',
-  impact: '',
-  skills: [] as string[],
-  projects: [] as string[]
+  name: '',
+  issuing_organization: '',
+  issue_date: '',
+  credential_url: ''
+});
+
+const fetchCertifications = async () => {
+  try {
+    certifications.value = await certificationService.getCertifications();
+  } catch (error) {
+    toast.error("Erro ao carregar certificações.");
+  }
+};
+
+onMounted(() => {
+  fetchCertifications();
 });
 
 const openNewCertModal = () => {
@@ -265,8 +199,13 @@ const openNewCertModal = () => {
 };
 
 const editCertification = (cert: Certification) => {
-  editingCert.value = cert.title;
-  Object.assign(certForm, cert);
+  editingCert.value = cert.id ?? null;
+  Object.assign(certForm, {
+    name: cert.name || '',
+    issuing_organization: cert.issuing_organization || '',
+    issue_date: cert.issue_date ? cert.issue_date.slice(0, 10) : '',
+    credential_url: cert.credential_url || ''
+  });
   showModal.value = true;
 };
 
@@ -277,45 +216,48 @@ const closeModal = () => {
 
 const resetForm = () => {
   Object.assign(certForm, {
-    title: '',
-    institution: '',
-    year: '',
-    status: '',
-    logo: '',
-    description: '',
-    impact: '',
-    skills: [],
-    projects: []
+    name: '',
+    issuing_organization: '',
+    issue_date: '',
+    credential_url: ''
   });
-  skillInput.value = '';
 };
 
-const addSkill = () => {
-  if (skillInput.value.trim() && !certForm.skills.includes(skillInput.value.trim())) {
-    certForm.skills.push(skillInput.value.trim());
-    skillInput.value = '';
-  }
+const formatDate = (value?: string) => {
+  if (!value) return "—";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "—";
+  return date.toLocaleDateString("pt-BR");
 };
 
-const removeSkill = (skill: string) => {
-  certForm.skills = certForm.skills.filter(s => s !== skill);
-};
-
-const saveCertification = () => {
-  if (editingCert.value) {
-    const index = certifications.value.findIndex(c => c.title === editingCert.value);
-    if (index !== -1) {
-      certifications.value[index] = { ...certForm };
+const saveCertification = async () => {
+  try {
+    if (editingCert.value) {
+      await certificationService.updateCertification(editingCert.value, certForm as Certification);
+      toast.success("Certificação atualizada com sucesso!");
+    } else {
+      const newCert = await certificationService.createCertification(certForm as Certification);
+      if (newCert.id) {
+        toast.success("Certificação criada com sucesso!");
+      }
     }
-  } else {
-    certifications.value.push({ ...certForm });
+    closeModal();
+    await fetchCertifications();
+  } catch (error) {
+    toast.error("Erro ao salvar certificação.");
   }
-  closeModal();
 };
 
-const deleteCertification = (title: string) => {
+const deleteCertification = async (id?: number) => {
+  if (!id) return;
   if (confirm('Are you sure you want to delete this certification?')) {
-    certifications.value = certifications.value.filter(c => c.title !== title);
+    try {
+      await certificationService.deleteCertification(id);
+      toast.success("Certificação excluída com sucesso!");
+      await fetchCertifications();
+    } catch (error) {
+      toast.error("Erro ao excluir certificação.");
+    }
   }
 };
 </script>

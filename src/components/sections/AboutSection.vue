@@ -40,12 +40,12 @@
               <span>Baixar Currículo</span>
             </button> -->
 
-            <button
-              @click="showCertifications = true"
+            <a
+              href="#certifications"
               class="px-6 py-3 bg-background-secondary text-accent-light font-medium rounded-lg border border-accent/10 hover:bg-accent/10 transition-colors duration-300"
             >
               Ver Certificações
-            </button>
+            </a>
 
             <div class="flex gap-4">
               <a
@@ -100,14 +100,10 @@
       </div>
     </div>
 
-    <!-- Certifications Modal -->
-    <CertificationsModal :show="showCertifications" @close="showCertifications = false" />
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import CertificationsModal from "../CertificationsModal.vue";
 
 const bornDate: Date = new Date("1999-07-23");
 const currentDate: Date = new Date();
@@ -122,8 +118,6 @@ const hadBirthday =
 if (!hadBirthday) {
   hendriusAge -= 1;
 }
-
-const showCertifications = ref(false);
 
 const downloadResume = () => {
   // TODO: Implement resume download functionality
