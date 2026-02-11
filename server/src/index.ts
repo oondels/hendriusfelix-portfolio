@@ -2,6 +2,8 @@ import express, { Request, Response, NextFunction } from "express"
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { projectsRouter } from "./routes/projects.route";
+import { certificationsRouter } from "./routes/certifications.route";
+import { dashboardRouter } from "./routes/dashboard.route";
 import { vars } from "./config/dotenv";
 
 const app = express()
@@ -11,6 +13,8 @@ app.use(cors({ origin: "*" }))
 app.use(cookieParser())
 app.use(express.json())
 app.use("/api/projects", projectsRouter)
+app.use("/api/certifications", certificationsRouter)
+app.use("/api/dashboard", dashboardRouter)
 
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({ message: "Hendrius' portfolio api is running!" })
